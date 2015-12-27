@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetrisCubeDlxConsole", "TetrisCubeDlxConsole\TetrisCubeDlxConsole.csproj", "{E18DFB72-7731-44AC-A5B6-A92A3F39497B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetrisCubeDlx", "TetrisCubeDlx\TetrisCubeDlx.csproj", "{01634CF9-C545-41B0-9627-D2E5BC8BF47B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetrisCubeDlxTests", "TetrisCubeDlxTests\TetrisCubeDlxTests.csproj", "{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E18DFB72-7731-44AC-A5B6-A92A3F39497B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E18DFB72-7731-44AC-A5B6-A92A3F39497B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E18DFB72-7731-44AC-A5B6-A92A3F39497B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E18DFB72-7731-44AC-A5B6-A92A3F39497B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01634CF9-C545-41B0-9627-D2E5BC8BF47B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01634CF9-C545-41B0-9627-D2E5BC8BF47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01634CF9-C545-41B0-9627-D2E5BC8BF47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01634CF9-C545-41B0-9627-D2E5BC8BF47B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
