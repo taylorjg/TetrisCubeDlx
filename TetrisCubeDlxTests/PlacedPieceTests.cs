@@ -45,32 +45,42 @@ namespace TetrisCubeDlxTests
         {
             var placedPiece = new PlacedPiece(_piece, Orientation.Normal);
 
-            AssertPiece(placedPiece, 2, 2, 3, new[]
-            {
-                new Coords(1, 0, 0),
-                new Coords(1, 0, 1),
-                new Coords(1, 0, 2),
-                new Coords(0, 0, 2),
-                new Coords(0, 1, 2)
-            });
+            AssertPlacedPiece(
+                placedPiece,
+                2,
+                2,
+                3,
+                new[]
+                {
+                    new Coords(1, 0, 0),
+                    new Coords(1, 0, 1),
+                    new Coords(1, 0, 2),
+                    new Coords(0, 0, 2),
+                    new Coords(0, 1, 2)
+                });
         }
 
         [Test]
         public void RotateZ90()
         {
-            var rotatedPiece = new PlacedPiece(_piece, Orientation.Z90);
+            var placedPiece = new PlacedPiece(_piece, Orientation.Z90);
 
-            AssertPiece(rotatedPiece, 2, 2, 3, new[]
-            {
-                new Coords(0, 0, 0),
-                new Coords(0, 0, 1),
-                new Coords(0, 0, 2),
-                new Coords(0, 1, 2),
-                new Coords(1, 1, 2)
-            });
+            AssertPlacedPiece(
+                placedPiece,
+                2,
+                2,
+                3,
+                new[]
+                {
+                    new Coords(0, 0, 0),
+                    new Coords(0, 0, 1),
+                    new Coords(0, 0, 2),
+                    new Coords(0, 1, 2),
+                    new Coords(1, 1, 2)
+                });
         }
 
-        private void AssertPiece(PlacedPiece placedPiece, int width, int height, int depth, Coords[] trueSquares)
+        private void AssertPlacedPiece(PlacedPiece placedPiece, int width, int height, int depth, Coords[] trueSquares)
         {
             Assert.That(placedPiece.Width, Is.EqualTo(width), "width");
             Assert.That(placedPiece.Height, Is.EqualTo(height), "height");

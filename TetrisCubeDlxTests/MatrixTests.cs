@@ -50,5 +50,20 @@ namespace TetrisCubeDlxTests
             Assert.That(actual.Y, Is.EqualTo(31));
             Assert.That(actual.Z, Is.EqualTo(49));
         }
+
+        [Test]
+        public void MatrixInverseMultiplyCoords()
+        {
+            var matrix = new Matrix(
+                0, 1, 0,
+                -1, 0, 0,
+                0, 0, 1);
+
+            var coords1 = new Coords(2, 0, 0);
+            var coords2 = matrix.Multiply(coords1);
+            var coords3 = matrix.InverseMultiply(coords2);
+
+            Assert.That(coords3, Is.EqualTo(coords1));
+        }
     }
 }

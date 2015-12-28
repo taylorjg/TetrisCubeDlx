@@ -1,4 +1,6 @@
-﻿namespace TetrisCubeDlx
+﻿using MathNet.Numerics.LinearAlgebra;
+
+namespace TetrisCubeDlx
 {
     public class Matrix
     {
@@ -55,5 +57,35 @@
                 B1 * coords.X + B2 * coords.Y + B3 * coords.Z,
                 C1 * coords.X + C2 * coords.Y + C3 * coords.Z);
         }
+
+        public Coords InverseMultiply(Coords coords)
+        {
+            double[,] array =
+            {
+                {A1, A2, A3},
+                {B1, B2, B3},
+                {C1, C2, C3}
+            };
+
+            var matrixBuilder = Matrix<double>.Build;
+            var matrix = matrixBuilder.DenseOfArray(array);
+            var inverseMatrix = matrix.Inverse();
+
+            var vectorBuilder = Vector<double>.Build;
+            var vector = vectorBuilder.DenseOfArray(new double[] {coords.X, coords.Y, coords.Z});
+            var inverseVector = inverseMatrix.Multiply(vector);
+
+            var x = (int) System.Math.Round(inverseVector[0]);
+            var y = (int) System.Math.Round(inverseVector[1]);
+            var z = (int) System.Math.Round(inverseVector[2]);
+
+            return new Coords(x, y, z);
+        }
+
+        public static Matrix Identity =>
+            new Matrix(
+                1, 0, 0,
+                0, 1, 0,
+                0, 0, 1);
     }
 }
