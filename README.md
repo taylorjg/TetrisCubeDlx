@@ -3,7 +3,7 @@
 
 This repo is another [DlxLib](https://github.com/taylorjg/DlxLib) demo program.
 
-![Photo](https://raw.github.com/taylorjg/PuzzleCubeDlx/master/Images/Photo.jpg)
+![Photo](https://raw.github.com/taylorjg/TetrisCubeDlx/master/Images/Photo.jpg)
 
 ## Links
 
