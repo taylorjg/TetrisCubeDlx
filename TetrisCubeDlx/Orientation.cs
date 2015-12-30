@@ -3,6 +3,8 @@
     public enum Orientation
     {
         Normal,
-        Z90
+        Z90Cw,
+        Z180Cw,
+        Z270Cw
     }
 }

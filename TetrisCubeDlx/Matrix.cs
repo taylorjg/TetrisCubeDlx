@@ -32,25 +32,25 @@ namespace TetrisCubeDlx
             D4 = d4;
         }
 
-        public int A1 { get; }
-        public int A2 { get; }
-        public int A3 { get; }
-        public int A4 { get; }
+        private int A1 { get; }
+        private int A2 { get; }
+        private int A3 { get; }
+        private int A4 { get; }
 
-        public int B1 { get; }
-        public int B2 { get; }
-        public int B3 { get; }
-        public int B4 { get; }
+        private int B1 { get; }
+        private int B2 { get; }
+        private int B3 { get; }
+        private int B4 { get; }
 
-        public int C1 { get; }
-        public int C2 { get; }
-        public int C3 { get; }
-        public int C4 { get; }
-
-        public int D1 { get; }
-        public int D2 { get; }
-        public int D3 { get; }
-        public int D4 { get; }
+        private int C1 { get; }
+        private int C2 { get; }
+        private int C3 { get; }
+        private int C4 { get; }
+        
+        private int D1 { get; }
+        private int D2 { get; }
+        private int D3 { get; }
+        private int D4 { get; }
 
         public Matrix Multiply(Matrix other)
         {
@@ -109,17 +109,31 @@ namespace TetrisCubeDlx
             return new Coords(x, y, z);
         }
 
-        public static Matrix Identity =>
+        public static readonly Matrix Identity =
             new Matrix(
                 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 
-        public static Matrix Z90Cw =>
+        public static readonly Matrix Z90Cw =
             new Matrix(
                 0, 1, 0, 0,
                 -1, 0, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1);
+
+        public static readonly Matrix Z180Cw =
+            new Matrix(
+                -1, 0, 0, 0,
+                0, -1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1);
+
+        public static readonly Matrix Z270Cw =
+            new Matrix(
+                0, -1, 0, 0,
+                1, 0, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
 

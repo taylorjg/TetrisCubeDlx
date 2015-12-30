@@ -43,9 +43,9 @@ namespace TetrisCubeDlxTests
         {
             var piece = new Piece(_initStrings);
 
-            Assert.That(piece.Width, Is.EqualTo(2));
-            Assert.That(piece.Height, Is.EqualTo(2));
-            Assert.That(piece.Depth, Is.EqualTo(3));
+            Assert.That(piece.Width, Is.EqualTo(2), "Width");
+            Assert.That(piece.Height, Is.EqualTo(2), "Height");
+            Assert.That(piece.Depth, Is.EqualTo(3), "Depth");
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace TetrisCubeDlxTests
         {
             var piece = new Piece(_initStrings);
 
-            var trueSquares = new[]
+            var hasSquares = new[]
             {
                 new Coords(1, 0, 0),
                 new Coords(1, 0, 1),
@@ -62,10 +62,10 @@ namespace TetrisCubeDlxTests
                 new Coords(0, 1, 2)
             };
 
-            var falseSquares = piece.AllSquares.Except(trueSquares);
+            var doesNotHaveSquares = piece.AllSquares.Except(hasSquares);
 
-            Assert.That(trueSquares, Is.All.Matches<Coords>(coords => piece.HasSquareAt(coords)));
-            Assert.That(falseSquares, Is.All.Matches<Coords>(coords => !piece.HasSquareAt(coords)));
+            Assert.That(hasSquares, Is.All.Matches<Coords>(piece.HasSquareAt), "hasSquares");
+            Assert.That(doesNotHaveSquares, Is.All.Matches<Coords>(coords => !piece.HasSquareAt(coords)), "doesNotHaveSquares");
         }
     }
 }

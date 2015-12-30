@@ -9,9 +9,8 @@ namespace TetrisCubeDlx
         public RotatedPiece(Piece piece, Orientation orientation)
         {
             _piece = piece;
-            _orientation = orientation;
 
-            var transforms = CalculateTransforms(_piece.Width);
+            var transforms = CalculateTransforms(orientation, _piece.Width, _piece.Height);
             var combinedRotationsMatrix = transforms.Item1;
             _combinedRotationsAndTranslationsMatrix = transforms.Item2;
 
@@ -23,11 +22,14 @@ namespace TetrisCubeDlx
             Depth = Math.Abs(transformedDimensions.Z);
         }
 
-        private Tuple<Matrix, Matrix> CalculateTransforms(int originalWidth)
+        private static Tuple<Matrix, Matrix> CalculateTransforms(
+            Orientation orientation,
+            int originalWidth,
+            int originalHeight)
         {
-            switch (_orientation)
+            switch (orientation)
             {
-                case Orientation.Z90:
+                case Orientation.Z90Cw:
                 {
                     var r1 = Matrix.Z90Cw;
                     var tx = -(originalWidth - 1);
@@ -37,24 +39,43 @@ namespace TetrisCubeDlx
                     return Tuple.Create(m1, m2);
                 }
 
-                default:
+                case Orientation.Z180Cw:
+                {
+                    var r1 = Matrix.Z180Cw;
+                    var tx = -(originalWidth - 1);
+                    var ty = -(originalHeight - 1);
+                    var t1 = Matrix.Translation(tx, ty, 0);
+                    var m1 = r1;
+                    var m2 = Matrix.MultiplyMatrices(r1, t1);
+                    return Tuple.Create(m1, m2);
+                }
+
+                case Orientation.Z270Cw:
+                {
+                    var r1 = Matrix.Z270Cw;
+                    var ty = -(originalHeight - 1);
+                    var t1 = Matrix.Translation(0, ty, 0);
+                    var m1 = r1;
+                    var m2 = Matrix.MultiplyMatrices(r1, t1);
+                    return Tuple.Create(m1, m2);
+                }
+
+                case Orientation.Normal:
                     return Tuple.Create(Matrix.Identity, Matrix.Identity);
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);
             }
         }
 
         private readonly Piece _piece;
-        private readonly Orientation _orientation;
         private readonly Matrix _combinedRotationsAndTranslationsMatrix;
 
         public int Width { get; }
         public int Height { get; }
         public int Depth { get; }
 
-        public IEnumerable<Coords> AllSquares =>
-            from x in Enumerable.Range(0, Width)
-            from y in Enumerable.Range(0, Height)
-            from z in Enumerable.Range(0, Depth)
-            select new Coords(x, y, z);
+        public IEnumerable<Coords> AllSquares => from x in Enumerable.Range(0, Width) from y in Enumerable.Range(0, Height) from z in Enumerable.Range(0, Depth) select new Coords(x, y, z);
 
         public bool HasSquareAt(Coords coords)
         {

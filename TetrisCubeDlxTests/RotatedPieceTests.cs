@@ -61,9 +61,9 @@ namespace TetrisCubeDlxTests
         }
 
         [Test]
-        public void RotateZ90()
+        public void RotatedZ90Cw()
         {
-            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z90);
+            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z90Cw);
 
             AssertPlacedPiece(
                 rotatedPiece,
@@ -80,16 +80,61 @@ namespace TetrisCubeDlxTests
                 });
         }
 
-        private void AssertPlacedPiece(RotatedPiece rotatedPiece, int width, int height, int depth, Coords[] trueSquares)
+        [Test]
+        public void RotatedZ180Cw()
+        {
+            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z180Cw);
+
+            AssertPlacedPiece(
+                rotatedPiece,
+                2,
+                2,
+                3,
+                new[]
+                {
+                    new Coords(0, 1, 0),
+                    new Coords(0, 1, 1),
+                    new Coords(0, 1, 2),
+                    new Coords(1, 1, 2),
+                    new Coords(1, 0, 2)
+                });
+        }
+
+        [Test]
+        public void RotatedZ270Cw()
+        {
+            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z270Cw);
+
+            AssertPlacedPiece(
+                rotatedPiece,
+                2,
+                2,
+                3,
+                new[]
+                {
+                    new Coords(1, 1, 0),
+                    new Coords(1, 1, 1),
+                    new Coords(1, 1, 2),
+                    new Coords(1, 0, 2),
+                    new Coords(0, 0, 2)
+                });
+        }
+
+        private void AssertPlacedPiece(
+            RotatedPiece rotatedPiece,
+            int width,
+            int height,
+            int depth,
+            Coords[] hasSquares)
         {
             Assert.That(rotatedPiece.Width, Is.EqualTo(width), "width");
             Assert.That(rotatedPiece.Height, Is.EqualTo(height), "height");
             Assert.That(rotatedPiece.Depth, Is.EqualTo(depth), "depth");
 
-            var falseSquares = rotatedPiece.AllSquares.Except(trueSquares);
+            var doesNotHaveSquares = rotatedPiece.AllSquares.Except(hasSquares);
 
-            Assert.That(trueSquares, Is.All.Matches<Coords>(coords => rotatedPiece.HasSquareAt(coords)), "trueSquares");
-            Assert.That(falseSquares, Is.All.Matches<Coords>(coords => !rotatedPiece.HasSquareAt(coords)), "falseSquares");
+            Assert.That(hasSquares, Is.All.Matches<Coords>(rotatedPiece.HasSquareAt), "hasSquares");
+            Assert.That(doesNotHaveSquares, Is.All.Matches<Coords>(coords => !rotatedPiece.HasSquareAt(coords)), "doesNotHaveSquares");
         }
     }
 }
