@@ -51,7 +51,7 @@
   <ItemGroup>
     <Compile Include="MatrixTests.cs" />
     <Compile Include="PieceTests.cs" />
-    <Compile Include="PlacedPieceTests.cs" />
+    <Compile Include="RotatedPieceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
