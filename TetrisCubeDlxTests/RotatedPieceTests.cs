@@ -82,9 +82,9 @@ namespace TetrisCubeDlxTests
 
         private void AssertPlacedPiece(RotatedPiece rotatedPiece, int width, int height, int depth, Coords[] trueSquares)
         {
-            //Assert.That(rotatedPiece.Width, Is.EqualTo(width), "width");
-            //Assert.That(rotatedPiece.Height, Is.EqualTo(height), "height");
-            //Assert.That(rotatedPiece.Depth, Is.EqualTo(depth), "depth");
+            Assert.That(rotatedPiece.Width, Is.EqualTo(width), "width");
+            Assert.That(rotatedPiece.Height, Is.EqualTo(height), "height");
+            Assert.That(rotatedPiece.Depth, Is.EqualTo(depth), "depth");
 
             var falseSquares = rotatedPiece.AllSquares.Except(trueSquares);
 

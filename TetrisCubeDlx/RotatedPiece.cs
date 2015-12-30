@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TetrisCubeDlx
@@ -9,21 +10,20 @@ namespace TetrisCubeDlx
         {
             _piece = piece;
             _orientation = orientation;
-            _transform = CalculateTransform(_piece.Width);
+
+            var transforms = CalculateTransforms(_piece.Width);
+            var combinedRotationsMatrix = transforms.Item1;
+            _combinedRotationsAndTranslationsMatrix = transforms.Item2;
 
             var dimensions = new Coords(_piece.Width, _piece.Height, _piece.Depth);
+            var transformedDimensions = combinedRotationsMatrix.Multiply(dimensions);
 
-            //var transformedDimensions = _transform.Multiply(dimensions);
-            //Width = Math.Abs(transformedDimensions.X);
-            //Height = Math.Abs(transformedDimensions.Y);
-            //Depth = Math.Abs(transformedDimensions.Z);
-
-            Width = _piece.Width;
-            Height = _piece.Height;
-            Depth = _piece.Depth;
+            Width = Math.Abs(transformedDimensions.X);
+            Height = Math.Abs(transformedDimensions.Y);
+            Depth = Math.Abs(transformedDimensions.Z);
         }
 
-        private Matrix CalculateTransform(int originalWidth)
+        private Tuple<Matrix, Matrix> CalculateTransforms(int originalWidth)
         {
             switch (_orientation)
             {
@@ -43,17 +43,17 @@ namespace TetrisCubeDlx
 
                     var matrix3 = matrix1.Multiply(matrix2);
 
-                    return matrix3;
+                    return Tuple.Create(matrix1, matrix3);
                 }
 
                 default:
-                    return Matrix.Identity;
+                    return Tuple.Create(Matrix.Identity, Matrix.Identity);
             }
         }
 
         private readonly Piece _piece;
         private readonly Orientation _orientation;
-        private readonly Matrix _transform;
+        private readonly Matrix _combinedRotationsAndTranslationsMatrix;
 
         public int Width { get; }
         public int Height { get; }
@@ -67,7 +67,7 @@ namespace TetrisCubeDlx
 
         public bool HasSquareAt(Coords coords)
         {
-            var transformedCoords = _transform.InverseMultiply(coords);
+            var transformedCoords = _combinedRotationsAndTranslationsMatrix.InverseMultiply(coords);
             return _piece.HasSquareAt(transformedCoords);
         }
     }
