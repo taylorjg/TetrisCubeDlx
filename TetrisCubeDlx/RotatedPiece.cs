@@ -29,21 +29,12 @@ namespace TetrisCubeDlx
             {
                 case Orientation.Z90:
                 {
-                    var matrix1 = new Matrix(
-                        0, 1, 0, 0,
-                        -1, 0, 0, 0,
-                        0, 0, 1, 0,
-                        0, 0, 0, 1);
-
-                    var matrix2 = new Matrix(
-                        1, 0, 0, -(originalWidth - 1),
-                        0, 1, 0, 0,
-                        0, 0, 1, 0,
-                        0, 0, 0, 1);
-
-                    var matrix3 = matrix1.Multiply(matrix2);
-
-                    return Tuple.Create(matrix1, matrix3);
+                    var r1 = Matrix.Z90Cw;
+                    var tx = -(originalWidth - 1);
+                    var t1 = Matrix.Translation(tx, 0, 0);
+                    var m1 = r1;
+                    var m2 = Matrix.MultiplyMatrices(r1, t1);
+                    return Tuple.Create(m1, m2);
                 }
 
                 default:

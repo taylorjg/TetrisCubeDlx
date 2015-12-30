@@ -1,4 +1,5 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using System.Linq;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace TetrisCubeDlx
 {
@@ -114,5 +115,26 @@ namespace TetrisCubeDlx
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1);
+
+        public static Matrix Z90Cw =>
+            new Matrix(
+                0, 1, 0, 0,
+                -1, 0, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1);
+
+        public static Matrix Translation(int tx, int ty, int tz)
+        {
+            return new Matrix(
+                1, 0, 0, tx,
+                0, 1, 0, ty,
+                0, 0, 1, tz,
+                0, 0, 0, 1);
+        }
+
+        public static Matrix MultiplyMatrices(params Matrix[] ms)
+        {
+            return ms.Aggregate(Identity, (acc, m) => acc.Multiply(m));
+        }
     }
 }
