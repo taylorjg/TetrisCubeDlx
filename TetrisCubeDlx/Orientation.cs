@@ -5,6 +5,7 @@
         Normal,
         Z90Cw,
         Z180Cw,
-        Z270Cw
+        Z270Cw,
+        X90Cw
     }
 }

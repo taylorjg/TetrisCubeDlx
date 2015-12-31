@@ -19,8 +19,8 @@ namespace TetrisCubeDlxTests
             var coords2 = matrix.Multiply(coords1);
             var coords3 = matrix.InverseMultiply(coords2);
 
-            Assert.That(coords3, Is.EqualTo(coords1));
             Assert.That(coords2, Is.Not.EqualTo(coords1));
+            Assert.That(coords3, Is.EqualTo(coords1));
         }
 
         [Test]
@@ -36,8 +36,8 @@ namespace TetrisCubeDlxTests
             var coords2 = matrix.Multiply(coords1);
             var coords3 = matrix.InverseMultiply(coords2);
 
-            Assert.That(coords3, Is.EqualTo(coords1));
             Assert.That(coords2, Is.Not.EqualTo(coords1));
+            Assert.That(coords3, Is.EqualTo(coords1));
         }
 
         [Test]
@@ -61,8 +61,8 @@ namespace TetrisCubeDlxTests
             var coords2 = matrix3.Multiply(coords1);
             var coords3 = matrix3.InverseMultiply(coords2);
 
-            Assert.That(coords3, Is.EqualTo(coords1));
             Assert.That(coords2, Is.Not.EqualTo(coords1));
+            Assert.That(coords3, Is.EqualTo(coords1));
         }
     }
 }

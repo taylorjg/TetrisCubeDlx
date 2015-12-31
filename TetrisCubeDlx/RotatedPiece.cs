@@ -29,6 +29,9 @@ namespace TetrisCubeDlx
         {
             switch (orientation)
             {
+                case Orientation.Normal:
+                    return Tuple.Create(Matrix.Identity, Matrix.Identity);
+
                 case Orientation.Z90Cw:
                 {
                     var r1 = Matrix.Z90Cw;
@@ -60,8 +63,15 @@ namespace TetrisCubeDlx
                     return Tuple.Create(m1, m2);
                 }
 
-                case Orientation.Normal:
-                    return Tuple.Create(Matrix.Identity, Matrix.Identity);
+                case Orientation.X90Cw:
+                {
+                    var r1 = Matrix.X90Cw;
+                    var ty = -(originalHeight - 1);
+                    var t1 = Matrix.Translation(0, ty, 0);
+                    var m1 = r1;
+                    var m2 = Matrix.MultiplyMatrices(r1, t1);
+                    return Tuple.Create(m1, m2);
+                }
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);
@@ -75,7 +85,11 @@ namespace TetrisCubeDlx
         public int Height { get; }
         public int Depth { get; }
 
-        public IEnumerable<Coords> AllSquares => from x in Enumerable.Range(0, Width) from y in Enumerable.Range(0, Height) from z in Enumerable.Range(0, Depth) select new Coords(x, y, z);
+        public IEnumerable<Coords> AllSquares =>
+            from x in Enumerable.Range(0, Width)
+            from y in Enumerable.Range(0, Height)
+            from z in Enumerable.Range(0, Depth)
+            select new Coords(x, y, z);
 
         public bool HasSquareAt(Coords coords)
         {

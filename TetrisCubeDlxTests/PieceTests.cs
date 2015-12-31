@@ -53,7 +53,7 @@ namespace TetrisCubeDlxTests
         {
             var piece = new Piece(_initStrings);
 
-            var hasSquares = new[]
+            var hasSquaresAt = new[]
             {
                 new Coords(1, 0, 0),
                 new Coords(1, 0, 1),
@@ -62,10 +62,10 @@ namespace TetrisCubeDlxTests
                 new Coords(0, 1, 2)
             };
 
-            var doesNotHaveSquares = piece.AllSquares.Except(hasSquares);
+            var doesNotHaveSquaresAt = piece.AllSquares.Except(hasSquaresAt);
 
-            Assert.That(hasSquares, Is.All.Matches<Coords>(piece.HasSquareAt), "hasSquares");
-            Assert.That(doesNotHaveSquares, Is.All.Matches<Coords>(coords => !piece.HasSquareAt(coords)), "doesNotHaveSquares");
+            Assert.That(hasSquaresAt, Is.All.Matches<Coords>(piece.HasSquareAt), "hasSquaresAt");
+            Assert.That(doesNotHaveSquaresAt, Is.All.Matches<Coords>(coords => !piece.HasSquareAt(coords)), "doesNotHaveSquaresAt");
         }
     }
 }
