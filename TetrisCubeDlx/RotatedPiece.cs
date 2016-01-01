@@ -6,50 +6,54 @@ namespace TetrisCubeDlx
 {
     public class RotatedPiece
     {
-        public RotatedPiece(Piece piece, params Orientation[] orientations)
+        public RotatedPiece(Piece piece, params Rotation[] rotations)
         {
             _piece = piece;
-            _transform = CalculateRotationTransform(orientations);
+            _rotationMatrix = CalculateRotationMatrix(rotations);
 
-            // TODO: we can probably just concatenate a translation matrix instead of doing explicit correction.
             var dimensions = new Coords(_piece.Width - 1, _piece.Height - 1, _piece.Depth - 1);
-            var transformedDimensions = _transform.Multiply(dimensions);
-            _xCorrection = Math.Min(transformedDimensions.X, 0);
-            _yCorrection = Math.Min(transformedDimensions.Y, 0);
-            _zCorrection = Math.Min(transformedDimensions.Z, 0);
+            var transformedDimensions = _rotationMatrix.Multiply(dimensions);
+
+            _xCorrection = -Math.Min(transformedDimensions.X, 0);
+            _yCorrection = -Math.Min(transformedDimensions.Y, 0);
+            _zCorrection = -Math.Min(transformedDimensions.Z, 0);
         }
-
-        private static readonly IDictionary<Orientation, Matrix> OrientationToRotationMatrixDictionary = new Dictionary<Orientation, Matrix>
-        {
-            {Orientation.X0Cw, Matrix.Identity},
-            {Orientation.X90Cw, Matrix.X90Cw},
-
-            {Orientation.Y0Cw, Matrix.Identity},
-
-            {Orientation.Z0Cw, Matrix.Identity},
-            {Orientation.Z90Cw, Matrix.Z90Cw},
-            {Orientation.Z180Cw, Matrix.Z180Cw},
-            {Orientation.Z270Cw, Matrix.Z270Cw}
-        };
-
-        private static Matrix CalculateRotationTransform(IEnumerable<Orientation> orientations)
-        {
-            return orientations.Aggregate(
-                Matrix.Identity,
-                (acc, orientation) => acc.Multiply(OrientationToRotationMatrixDictionary[orientation]));
-        }
-
-        private readonly Piece _piece;
-        private readonly Matrix _transform;
-        private readonly int _xCorrection;
-        private readonly int _yCorrection;
-        private readonly int _zCorrection;
 
         public IEnumerable<Coords> OccupiedSquares()
         {
             return _piece.OccupiedSquares()
-                .Select(_transform.Multiply)
-                .Select(c => new Coords(c.X - _xCorrection, c.Y - _yCorrection, c.Z - _zCorrection));
+                .Select(_rotationMatrix.Multiply)
+                .Select(c =>
+                    new Coords(
+                        c.X + _xCorrection,
+                        c.Y + _yCorrection,
+                        c.Z + _zCorrection));
         }
+
+        private static readonly IDictionary<Rotation, Matrix> RotationToMatrixDictionary = new Dictionary<Rotation, Matrix>
+        {
+            {Rotation.X0Cw, Matrix.Identity},
+            {Rotation.X90Cw, Matrix.X90Cw},
+
+            {Rotation.Y0Cw, Matrix.Identity},
+
+            {Rotation.Z0Cw, Matrix.Identity},
+            {Rotation.Z90Cw, Matrix.Z90Cw},
+            {Rotation.Z180Cw, Matrix.Z180Cw},
+            {Rotation.Z270Cw, Matrix.Z270Cw}
+        };
+
+        private static Matrix CalculateRotationMatrix(IEnumerable<Rotation> rotations)
+        {
+            return rotations.Aggregate(
+                Matrix.Identity,
+                (acc, orientation) => acc.Multiply(RotationToMatrixDictionary[orientation]));
+        }
+
+        private readonly Piece _piece;
+        private readonly Matrix _rotationMatrix;
+        private readonly int _xCorrection;
+        private readonly int _yCorrection;
+        private readonly int _zCorrection;
     }
 }

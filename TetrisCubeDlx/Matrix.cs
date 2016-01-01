@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 
 namespace TetrisCubeDlx
 {
@@ -151,11 +150,6 @@ namespace TetrisCubeDlx
                 0, 1, 0, ty,
                 0, 0, 1, tz,
                 0, 0, 0, 1);
-        }
-
-        public static Matrix MultiplyMatrices(params Matrix[] ms)
-        {
-            return ms.Aggregate(Identity, (acc, m) => acc.Multiply(m));
         }
     }
 }

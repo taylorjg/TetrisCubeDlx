@@ -41,9 +41,43 @@ namespace TetrisCubeDlxTests
         }
 
         [Test]
-        public void NoRotation()
+        public void RotatedX0Cw()
         {
-            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z0Cw);
+            var rotatedPiece = new RotatedPiece(_piece, Rotation.X0Cw);
+
+            AssertRotatedPiece(
+                rotatedPiece,
+                new[]
+                {
+                    new Coords(1, 0, 0),
+                    new Coords(1, 0, 1),
+                    new Coords(1, 0, 2),
+                    new Coords(0, 0, 2),
+                    new Coords(0, 1, 2)
+                });
+        }
+
+        [Test]
+        public void RotatedY0Cw()
+        {
+            var rotatedPiece = new RotatedPiece(_piece, Rotation.Y0Cw);
+
+            AssertRotatedPiece(
+                rotatedPiece,
+                new[]
+                {
+                    new Coords(1, 0, 0),
+                    new Coords(1, 0, 1),
+                    new Coords(1, 0, 2),
+                    new Coords(0, 0, 2),
+                    new Coords(0, 1, 2)
+                });
+        }
+
+        [Test]
+        public void RotatedZ0Cw()
+        {
+            var rotatedPiece = new RotatedPiece(_piece, Rotation.Z0Cw);
 
             AssertRotatedPiece(
                 rotatedPiece,
@@ -60,7 +94,7 @@ namespace TetrisCubeDlxTests
         [Test]
         public void RotatedZ90Cw()
         {
-            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z90Cw);
+            var rotatedPiece = new RotatedPiece(_piece, Rotation.Z90Cw);
 
             AssertRotatedPiece(
                 rotatedPiece,
@@ -77,7 +111,7 @@ namespace TetrisCubeDlxTests
         [Test]
         public void RotatedZ180Cw()
         {
-            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z180Cw);
+            var rotatedPiece = new RotatedPiece(_piece, Rotation.Z180Cw);
 
             AssertRotatedPiece(
                 rotatedPiece,
@@ -94,7 +128,7 @@ namespace TetrisCubeDlxTests
         [Test]
         public void RotatedZ270Cw()
         {
-            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z270Cw);
+            var rotatedPiece = new RotatedPiece(_piece, Rotation.Z270Cw);
 
             AssertRotatedPiece(
                 rotatedPiece,
@@ -111,7 +145,7 @@ namespace TetrisCubeDlxTests
         [Test]
         public void RotatedX90Cw()
         {
-            var rotatedPiece = new RotatedPiece(_piece, Orientation.X90Cw);
+            var rotatedPiece = new RotatedPiece(_piece, Rotation.X90Cw);
 
             AssertRotatedPiece(
                 rotatedPiece,
@@ -128,7 +162,7 @@ namespace TetrisCubeDlxTests
         [Test]
         public void RotatedX90CwZ90Cw()
         {
-            var rotatedPiece = new RotatedPiece(_piece, Orientation.X90Cw, Orientation.Z90Cw);
+            var rotatedPiece = new RotatedPiece(_piece, Rotation.X90Cw, Rotation.Z90Cw);
 
             AssertRotatedPiece(
                 rotatedPiece,

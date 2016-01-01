@@ -68,10 +68,9 @@ namespace TetrisCubeDlxTests
         }
 
         [Test]
-        public void Test1()
+        public void RotationAndCorrectionExperiment()
         {
-            //var matrix = Matrix.Z90Cw.Multiply(Matrix.X90Cw);
-            var matrix = Matrix.Identity;
+            var matrix = Matrix.Z90Cw.Multiply(Matrix.X90Cw);
 
             const int width = 3;
             const int height = 2;
