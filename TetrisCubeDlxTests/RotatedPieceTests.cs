@@ -43,7 +43,7 @@ namespace TetrisCubeDlxTests
         [Test]
         public void NoRotation()
         {
-            var rotatedPiece = new RotatedPiece(_piece, Orientation.Normal);
+            var rotatedPiece = new RotatedPiece(_piece, Orientation.Z0Cw);
 
             AssertRotatedPiece(
                 rotatedPiece,

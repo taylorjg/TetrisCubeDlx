@@ -2,10 +2,12 @@
 {
     public enum Orientation
     {
-        Normal,
+        Z0Cw,
         Z90Cw,
         Z180Cw,
         Z270Cw,
-        X90Cw
+        X0Cw,
+        X90Cw,
+        Y0Cw
     }
 }

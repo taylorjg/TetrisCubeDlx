@@ -9,7 +9,7 @@ namespace TetrisCubeDlx
         public RotatedPiece(Piece piece, params Orientation[] orientations)
         {
             _piece = piece;
-            _transform = CalculateTransform(orientations);
+            _transform = CalculateRotationTransform(orientations);
 
             // TODO: we can probably just concatenate a translation matrix instead of doing explicit correction.
             var dimensions = new Coords(_piece.Width - 1, _piece.Height - 1, _piece.Depth - 1);
@@ -19,36 +19,24 @@ namespace TetrisCubeDlx
             _zCorrection = Math.Min(transformedDimensions.Z, 0);
         }
 
-        // TODO: replace this method with a dictionary of Orientation -> Matrix
-        private static Matrix OrientationToRotationMatrix(Orientation orientation)
+        private static readonly IDictionary<Orientation, Matrix> OrientationToRotationMatrixDictionary = new Dictionary<Orientation, Matrix>
         {
-            switch (orientation)
-            {
-                case Orientation.Normal:
-                    return Matrix.Identity;
+            {Orientation.X0Cw, Matrix.Identity},
+            {Orientation.X90Cw, Matrix.X90Cw},
 
-                case Orientation.Z90Cw:
-                    return Matrix.Z90Cw;
+            {Orientation.Y0Cw, Matrix.Identity},
 
-                case Orientation.Z180Cw:
-                    return Matrix.Z180Cw;
+            {Orientation.Z0Cw, Matrix.Identity},
+            {Orientation.Z90Cw, Matrix.Z90Cw},
+            {Orientation.Z180Cw, Matrix.Z180Cw},
+            {Orientation.Z270Cw, Matrix.Z270Cw}
+        };
 
-                case Orientation.Z270Cw:
-                    return Matrix.Z270Cw;
-
-                case Orientation.X90Cw:
-                    return Matrix.X90Cw;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);
-            }
-        }
-
-        private static Matrix CalculateTransform(IEnumerable<Orientation> orientations)
+        private static Matrix CalculateRotationTransform(IEnumerable<Orientation> orientations)
         {
             return orientations.Aggregate(
                 Matrix.Identity,
-                (acc, orientation) => acc.Multiply(OrientationToRotationMatrix((orientation))));
+                (acc, orientation) => acc.Multiply(OrientationToRotationMatrixDictionary[orientation]));
         }
 
         private readonly Piece _piece;
