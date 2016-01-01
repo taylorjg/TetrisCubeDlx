@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using TetrisCubeDlx;
 
@@ -174,6 +175,19 @@ namespace TetrisCubeDlxTests
                     new Coords(0, 1, 1),
                     new Coords(0, 0, 1)
                 });
+        }
+
+        [TestCase(new[] {Rotation.Z90Cw, Rotation.Z90Cw, Rotation.Z90Cw, Rotation.Z90Cw})]
+        [TestCase(new[] {Rotation.Z180Cw, Rotation.Z180Cw})]
+        [TestCase(new[] {Rotation.Z90Cw, Rotation.Z180Cw, Rotation.Z90Cw})]
+        [TestCase(new[] {Rotation.Z180Cw, Rotation.Z90Cw, Rotation.Z90Cw})]
+        [TestCase(new[] {Rotation.Z90Cw, Rotation.Z90Cw, Rotation.Z180Cw})]
+        [TestCase(new[] {Rotation.Z270Cw, Rotation.Z90Cw})]
+        [TestCase(new[] {Rotation.Z90Cw, Rotation.Z270Cw})]
+        public void RotatedZ360Cw(Rotation[] rotations)
+        {
+            var rotatedPiece = new RotatedPiece(_piece, rotations);
+            CollectionAssert.AreEqual(_piece.OccupiedSquares(), rotatedPiece.OccupiedSquares());
         }
 
         private static void AssertRotatedPiece(
