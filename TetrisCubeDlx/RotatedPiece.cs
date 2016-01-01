@@ -14,20 +14,18 @@ namespace TetrisCubeDlx
             var dimensions = new Coords(_piece.Width - 1, _piece.Height - 1, _piece.Depth - 1);
             var transformedDimensions = _rotationMatrix.Multiply(dimensions);
 
-            _xCorrection = -Math.Min(transformedDimensions.X, 0);
-            _yCorrection = -Math.Min(transformedDimensions.Y, 0);
-            _zCorrection = -Math.Min(transformedDimensions.Z, 0);
+            var xCorrection = Math.Min(transformedDimensions.X, 0);
+            var yCorrection = Math.Min(transformedDimensions.Y, 0);
+            var zCorrection = Math.Min(transformedDimensions.Z, 0);
+
+            _correctionCoords = new Coords(xCorrection, yCorrection, zCorrection);
         }
 
         public IEnumerable<Coords> OccupiedSquares()
         {
             return _piece.OccupiedSquares()
                 .Select(_rotationMatrix.Multiply)
-                .Select(c =>
-                    new Coords(
-                        c.X + _xCorrection,
-                        c.Y + _yCorrection,
-                        c.Z + _zCorrection));
+                .Select(coords => coords - _correctionCoords);
         }
 
         private static readonly IDictionary<Rotation, Matrix> RotationToMatrixDictionary = new Dictionary<Rotation, Matrix>
@@ -52,8 +50,6 @@ namespace TetrisCubeDlx
 
         private readonly Piece _piece;
         private readonly Matrix _rotationMatrix;
-        private readonly int _xCorrection;
-        private readonly int _yCorrection;
-        private readonly int _zCorrection;
+        private readonly Coords _correctionCoords;
     }
 }
