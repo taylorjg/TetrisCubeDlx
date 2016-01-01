@@ -49,11 +49,11 @@ namespace TetrisCubeDlxTests
         }
 
         [Test]
-        public void PieceConstructedFromInitStringsHasCorrectSquares()
+        public void PieceConstructedFromInitStringsHasCorrectlyOccupiedSquares()
         {
             var piece = new Piece(_initStrings);
 
-            var hasSquaresAt = new[]
+            var occupiedSquares = new[]
             {
                 new Coords(1, 0, 0),
                 new Coords(1, 0, 1),
@@ -62,10 +62,12 @@ namespace TetrisCubeDlxTests
                 new Coords(0, 1, 2)
             };
 
-            var doesNotHaveSquaresAt = piece.AllSquares.Except(hasSquaresAt);
+            CollectionAssert.AreEquivalent(occupiedSquares, piece.OccupiedSquares());
 
-            Assert.That(hasSquaresAt, Is.All.Matches<Coords>(piece.HasSquareAt), "hasSquaresAt");
-            Assert.That(doesNotHaveSquaresAt, Is.All.Matches<Coords>(coords => !piece.HasSquareAt(coords)), "doesNotHaveSquaresAt");
+            Assert.That(occupiedSquares, Is.All.Matches<Coords>(piece.IsSquareOccupied), "occupiedSquares");
+
+            var vacantSquares = piece.AllSquares.Except(occupiedSquares);
+            Assert.That(vacantSquares, Is.All.Matches<Coords>(c => !piece.IsSquareOccupied(c)), "vacantSquares");
         }
     }
 }

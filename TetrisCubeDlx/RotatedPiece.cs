@@ -6,95 +6,62 @@ namespace TetrisCubeDlx
 {
     public class RotatedPiece
     {
-        public RotatedPiece(Piece piece, Orientation orientation)
+        public RotatedPiece(Piece piece, params Orientation[] orientations)
         {
             _piece = piece;
+            _transform = CalculateTransform(orientations);
 
-            var transforms = CalculateTransforms(orientation, _piece.Width, _piece.Height);
-            var combinedRotationsMatrix = transforms.Item1;
-            _combinedRotationsAndTranslationsMatrix = transforms.Item2;
-
-            var dimensions = new Coords(_piece.Width, _piece.Height, _piece.Depth);
-            var transformedDimensions = combinedRotationsMatrix.Multiply(dimensions);
-
-            Width = Math.Abs(transformedDimensions.X);
-            Height = Math.Abs(transformedDimensions.Y);
-            Depth = Math.Abs(transformedDimensions.Z);
+            // TODO: we can probably just concatenate a translation matrix instead of doing explicit correction.
+            var dimensions = new Coords(_piece.Width - 1, _piece.Height - 1, _piece.Depth - 1);
+            var transformedDimensions = _transform.Multiply(dimensions);
+            _xCorrection = Math.Min(transformedDimensions.X, 0);
+            _yCorrection = Math.Min(transformedDimensions.Y, 0);
+            _zCorrection = Math.Min(transformedDimensions.Z, 0);
         }
 
-        private static Tuple<Matrix, Matrix> CalculateTransforms(
-            Orientation orientation,
-            int originalWidth,
-            int originalHeight)
+        // TODO: replace this method with a dictionary of Orientation -> Matrix
+        private static Matrix OrientationToRotationMatrix(Orientation orientation)
         {
             switch (orientation)
             {
                 case Orientation.Normal:
-                    return Tuple.Create(Matrix.Identity, Matrix.Identity);
+                    return Matrix.Identity;
 
                 case Orientation.Z90Cw:
-                {
-                    var r1 = Matrix.Z90Cw;
-                    var tx = -(originalWidth - 1);
-                    var t1 = Matrix.Translation(tx, 0, 0);
-                    var m1 = r1;
-                    var m2 = Matrix.MultiplyMatrices(r1, t1);
-                    return Tuple.Create(m1, m2);
-                }
+                    return Matrix.Z90Cw;
 
                 case Orientation.Z180Cw:
-                {
-                    var r1 = Matrix.Z180Cw;
-                    var tx = -(originalWidth - 1);
-                    var ty = -(originalHeight - 1);
-                    var t1 = Matrix.Translation(tx, ty, 0);
-                    var m1 = r1;
-                    var m2 = Matrix.MultiplyMatrices(r1, t1);
-                    return Tuple.Create(m1, m2);
-                }
+                    return Matrix.Z180Cw;
 
                 case Orientation.Z270Cw:
-                {
-                    var r1 = Matrix.Z270Cw;
-                    var ty = -(originalHeight - 1);
-                    var t1 = Matrix.Translation(0, ty, 0);
-                    var m1 = r1;
-                    var m2 = Matrix.MultiplyMatrices(r1, t1);
-                    return Tuple.Create(m1, m2);
-                }
+                    return Matrix.Z270Cw;
 
                 case Orientation.X90Cw:
-                {
-                    var r1 = Matrix.X90Cw;
-                    var ty = -(originalHeight - 1);
-                    var t1 = Matrix.Translation(0, ty, 0);
-                    var m1 = r1;
-                    var m2 = Matrix.MultiplyMatrices(r1, t1);
-                    return Tuple.Create(m1, m2);
-                }
+                    return Matrix.X90Cw;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null);
             }
         }
 
-        private readonly Piece _piece;
-        private readonly Matrix _combinedRotationsAndTranslationsMatrix;
-
-        public int Width { get; }
-        public int Height { get; }
-        public int Depth { get; }
-
-        public IEnumerable<Coords> AllSquares =>
-            from x in Enumerable.Range(0, Width)
-            from y in Enumerable.Range(0, Height)
-            from z in Enumerable.Range(0, Depth)
-            select new Coords(x, y, z);
-
-        public bool HasSquareAt(Coords coords)
+        private static Matrix CalculateTransform(IEnumerable<Orientation> orientations)
         {
-            var transformedCoords = _combinedRotationsAndTranslationsMatrix.InverseMultiply(coords);
-            return _piece.HasSquareAt(transformedCoords);
+            return orientations.Aggregate(
+                Matrix.Identity,
+                (acc, orientation) => acc.Multiply(OrientationToRotationMatrix((orientation))));
+        }
+
+        private readonly Piece _piece;
+        private readonly Matrix _transform;
+        private readonly int _xCorrection;
+        private readonly int _yCorrection;
+        private readonly int _zCorrection;
+
+        public IEnumerable<Coords> OccupiedSquares()
+        {
+            return _piece.OccupiedSquares()
+                .Select(_transform.Multiply)
+                .Select(c => new Coords(c.X - _xCorrection, c.Y - _yCorrection, c.Z - _zCorrection));
         }
     }
 }

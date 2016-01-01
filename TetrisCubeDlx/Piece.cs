@@ -39,9 +39,14 @@ namespace TetrisCubeDlx
             from z in Enumerable.Range(0, Depth)
             select new Coords(x, y, z);
 
-        public bool HasSquareAt(Coords coords)
+        public bool IsSquareOccupied(Coords coords)
         {
             return _squares[coords.X, coords.Y, coords.Z];
+        }
+
+        public IEnumerable<Coords> OccupiedSquares()
+        {
+            return AllSquares.Where(IsSquareOccupied);
         }
     }
 }

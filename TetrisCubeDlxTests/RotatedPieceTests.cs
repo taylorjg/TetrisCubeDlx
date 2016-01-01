@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using TetrisCubeDlx;
 
@@ -47,9 +47,6 @@ namespace TetrisCubeDlxTests
 
             AssertRotatedPiece(
                 rotatedPiece,
-                2,
-                2,
-                3,
                 new[]
                 {
                     new Coords(1, 0, 0),
@@ -67,9 +64,6 @@ namespace TetrisCubeDlxTests
 
             AssertRotatedPiece(
                 rotatedPiece,
-                2,
-                2,
-                3,
                 new[]
                 {
                     new Coords(0, 0, 0),
@@ -87,9 +81,6 @@ namespace TetrisCubeDlxTests
 
             AssertRotatedPiece(
                 rotatedPiece,
-                2,
-                2,
-                3,
                 new[]
                 {
                     new Coords(0, 1, 0),
@@ -107,9 +98,6 @@ namespace TetrisCubeDlxTests
 
             AssertRotatedPiece(
                 rotatedPiece,
-                2,
-                2,
-                3,
                 new[]
                 {
                     new Coords(1, 1, 0),
@@ -127,9 +115,6 @@ namespace TetrisCubeDlxTests
 
             AssertRotatedPiece(
                 rotatedPiece,
-                2,
-                3,
-                2,
                 new[]
                 {
                     new Coords(0, 2, 0),
@@ -140,21 +125,28 @@ namespace TetrisCubeDlxTests
                 });
         }
 
+        [Test]
+        public void RotatedX90CwZ90Cw()
+        {
+            var rotatedPiece = new RotatedPiece(_piece, Orientation.X90Cw, Orientation.Z90Cw);
+
+            AssertRotatedPiece(
+                rotatedPiece,
+                new[]
+                {
+                    new Coords(0, 2, 0),
+                    new Coords(1, 2, 0),
+                    new Coords(0, 2, 1),
+                    new Coords(0, 1, 1),
+                    new Coords(0, 0, 1)
+                });
+        }
+
         private static void AssertRotatedPiece(
             RotatedPiece rotatedPiece,
-            int width,
-            int height,
-            int depth,
-            Coords[] hasSquaresAt)
+            IEnumerable<Coords> occupiedSquares)
         {
-            Assert.That(rotatedPiece.Width, Is.EqualTo(width), "width");
-            Assert.That(rotatedPiece.Height, Is.EqualTo(height), "height");
-            Assert.That(rotatedPiece.Depth, Is.EqualTo(depth), "depth");
-
-            var doesNotHaveSquaresAt = rotatedPiece.AllSquares.Except(hasSquaresAt);
-
-            Assert.That(hasSquaresAt, Is.All.Matches<Coords>(rotatedPiece.HasSquareAt), "hasSquaresAt");
-            Assert.That(doesNotHaveSquaresAt, Is.All.Matches<Coords>(coords => !rotatedPiece.HasSquareAt(coords)), "doesNotHaveSquaresAt");
+            CollectionAssert.AreEquivalent(occupiedSquares, rotatedPiece.OccupiedSquares());
         }
     }
 }
