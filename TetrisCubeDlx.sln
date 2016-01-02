@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetrisCubeDlx", "TetrisCube
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetrisCubeDlxTests", "TetrisCubeDlxTests\TetrisCubeDlxTests.csproj", "{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetrisCubeDlxWpf", "TetrisCubeDlxWpf\TetrisCubeDlxWpf.csproj", "{EC550DA2-D9F1-412F-846C-2C40F941CE08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73C6A2E7-4B00-4A4E-94A0-4ABA1B7ED46B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC550DA2-D9F1-412F-846C-2C40F941CE08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC550DA2-D9F1-412F-846C-2C40F941CE08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC550DA2-D9F1-412F-846C-2C40F941CE08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC550DA2-D9F1-412F-846C-2C40F941CE08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
