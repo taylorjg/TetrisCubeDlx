@@ -50,6 +50,7 @@
     <Compile Include="PieceTests.cs" />
     <Compile Include="RotatedPieceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UniqueRotationsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TetrisCubeDlx\TetrisCubeDlx.csproj">
