@@ -37,6 +37,11 @@
             }
         }
 
+        public static Coords operator+(Coords c1, Coords c2)
+        {
+            return new Coords(c1.X + c2.X, c1.Y + c2.Y, c1.Z + c2.Z);
+        }
+
         public static Coords operator-(Coords c1, Coords c2)
         {
             return new Coords(c1.X - c2.X, c1.Y - c2.Y, c1.Z - c2.Z);
