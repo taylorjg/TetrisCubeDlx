@@ -5,7 +5,7 @@ namespace TetrisCubeDlx
 {
     public class Piece
     {
-        public Piece(IReadOnlyList<string[]> initStrings)
+        public Piece(IReadOnlyList<string[]> initStrings, Colour colour = Colour.Orange, string name = "")
         {
             // TODO: validate initStrings...
             // cannot be null
@@ -13,6 +13,9 @@ namespace TetrisCubeDlx
             // all strings must have the same length (= piece width)
             // all slices (inner arrays) must have the same length (= piece height)
             // every char (string element) must be a space or 'X'
+
+            _colour = colour;
+            _name = name;
 
             Width = initStrings[0][0].Length;
             Height = initStrings[0].Length;
@@ -28,6 +31,8 @@ namespace TetrisCubeDlx
         }
 
         private readonly bool[,,] _squares;
+        private readonly Colour _colour;
+        private readonly string _name;
 
         public int Width { get; }
         public int Height { get; }

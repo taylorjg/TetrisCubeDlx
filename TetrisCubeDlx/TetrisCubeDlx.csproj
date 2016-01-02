@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Coords.cs" />
     <Compile Include="Matrix.cs" />
+    <Compile Include="Colour.cs" />
+    <Compile Include="Pieces.cs" />
     <Compile Include="Rotation.cs" />
     <Compile Include="Piece.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
