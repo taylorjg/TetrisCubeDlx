@@ -32,8 +32,13 @@ namespace TetrisCubeDlx
         {
             {Rotation.X0Cw, Matrix.Identity},
             {Rotation.X90Cw, Matrix.X90Cw},
+            {Rotation.X180Cw, Matrix.X180Cw},
+            {Rotation.X270Cw, Matrix.X270Cw},
 
             {Rotation.Y0Cw, Matrix.Identity},
+            {Rotation.Y90Cw, Matrix.Y90Cw},
+            {Rotation.Y180Cw, Matrix.Y180Cw},
+            {Rotation.Y270Cw, Matrix.Y270Cw},
 
             {Rotation.Z0Cw, Matrix.Identity},
             {Rotation.Z90Cw, Matrix.Z90Cw},

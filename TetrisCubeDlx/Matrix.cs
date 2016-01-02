@@ -62,6 +62,42 @@
                 0, 1, 0,
                 0, 0, 1);
 
+        public static readonly Matrix X90Cw =
+            new Matrix(
+                1, 0, 0,
+                0, 0, 1,
+                0, -1, 0);
+
+        public static readonly Matrix X180Cw =
+            new Matrix(
+                1, 0, 0,
+                0, -1, 0,
+                0, 0, -1);
+
+        public static readonly Matrix X270Cw =
+            new Matrix(
+                1, 0, 0,
+                0, 0, -1,
+                0, 1, 0);
+
+        public static readonly Matrix Y90Cw =
+            new Matrix(
+                0, 0, -1,
+                0, 1, 0,
+                1, 0, 0);
+
+        public static readonly Matrix Y180Cw =
+            new Matrix(
+                -1, 0, 0,
+                0, 1, 0,
+                0, 0, -1);
+
+        public static readonly Matrix Y270Cw =
+            new Matrix(
+                0, 0, 1,
+                0, 1, 0,
+                -1, 0, 0);
+
         public static readonly Matrix Z90Cw =
             new Matrix(
                 0, 1, 0,
@@ -79,11 +115,5 @@
                 0, -1, 0,
                 1, 0, 0,
                 0, 0, 1);
-
-        public static readonly Matrix X90Cw =
-            new Matrix(
-                1, 0, 0,
-                0, 0, 1,
-                0, -1, 0);
     }
 }

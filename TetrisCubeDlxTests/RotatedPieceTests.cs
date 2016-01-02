@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using TetrisCubeDlx;
 
@@ -176,15 +178,34 @@ namespace TetrisCubeDlxTests
                 });
         }
 
-        [TestCase(new[] {Rotation.Z90Cw, Rotation.Z90Cw, Rotation.Z90Cw, Rotation.Z90Cw})]
-        [TestCase(new[] {Rotation.Z180Cw, Rotation.Z180Cw})]
-        [TestCase(new[] {Rotation.Z90Cw, Rotation.Z180Cw, Rotation.Z90Cw})]
-        [TestCase(new[] {Rotation.Z180Cw, Rotation.Z90Cw, Rotation.Z90Cw})]
-        [TestCase(new[] {Rotation.Z90Cw, Rotation.Z90Cw, Rotation.Z180Cw})]
-        [TestCase(new[] {Rotation.Z270Cw, Rotation.Z90Cw})]
-        [TestCase(new[] {Rotation.Z90Cw, Rotation.Z270Cw})]
-        public void RotatedZ360Cw(Rotation[] rotations)
+        // X
+        [TestCase("X90Cw", "X90Cw", "X90Cw", "X90Cw")]
+        [TestCase("X180Cw", "X180Cw")]
+        [TestCase("X180Cw", "X90Cw", "X90Cw")]
+        [TestCase("X90Cw", "X180Cw", "X90Cw")]
+        [TestCase("X90Cw", "X90Cw", "X180Cw")]
+        [TestCase("X270Cw", "X90Cw")]
+        [TestCase("X90Cw", "X270Cw")]
+        // Y
+        [TestCase("Y90Cw", "Y90Cw", "Y90Cw", "Y90Cw")]
+        [TestCase("Y180Cw", "Y180Cw")]
+        [TestCase("Y180Cw", "Y90Cw", "Y90Cw")]
+        [TestCase("Y90Cw", "Y180Cw", "Y90Cw")]
+        [TestCase("Y90Cw", "Y90Cw", "Y180Cw")]
+        [TestCase("Y270Cw", "Y90Cw")]
+        [TestCase("Y90Cw", "Y270Cw")]
+        // Z
+        [TestCase("Z90Cw", "Z90Cw", "Z90Cw", "Z90Cw")]
+        [TestCase("Z180Cw", "Z180Cw")]
+        [TestCase("Z180Cw", "Z90Cw", "Z90Cw")]
+        [TestCase("Z90Cw", "Z180Cw", "Z90Cw")]
+        [TestCase("Z90Cw", "Z90Cw", "Z180Cw")]
+        [TestCase("Z270Cw", "Z90Cw")]
+        [TestCase("Z90Cw", "Z270Cw")]
+        public void FullRotations(params string[] rotationNames)
         {
+            var rotationType = typeof(Rotation);
+            var rotations = rotationNames.Select(rn => Enum.Parse(rotationType, rn)).Cast<Rotation>().ToArray();
             var rotatedPiece = new RotatedPiece(_piece, rotations);
             CollectionAssert.AreEqual(_piece.OccupiedSquares(), rotatedPiece.OccupiedSquares());
         }
