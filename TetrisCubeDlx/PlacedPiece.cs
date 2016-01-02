@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.Linq;
 
 namespace TetrisCubeDlx
@@ -7,17 +7,15 @@ namespace TetrisCubeDlx
     {
         public PlacedPiece(RotatedPiece rotatedPiece, Coords location)
         {
-            _rotatedPiece = rotatedPiece;
-            _location = location;
+            Name = rotatedPiece.Name;
+            Colour = rotatedPiece.Colour;
+            OccupiedSquares = rotatedPiece.OccupiedSquares
+                .Select(coords => coords + location)
+                .ToImmutableList();
         }
 
-        private readonly RotatedPiece _rotatedPiece;
-        private readonly Coords _location;
-
-        public string Name => _rotatedPiece.Name;
-        public Colour Colour => _rotatedPiece.Colour;
-
-        public IEnumerable<Coords> OccupiedSquares =>
-            _rotatedPiece.OccupiedSquares.Select(coords => coords + _location);
+        public string Name { get; }
+        public Colour Colour { get; }
+        public IImmutableList<Coords> OccupiedSquares { get; }
     }
 }

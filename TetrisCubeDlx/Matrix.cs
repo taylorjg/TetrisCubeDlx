@@ -2,7 +2,7 @@
 {
     public class Matrix
     {
-        public Matrix(
+        private Matrix(
             int a1, int a2, int a3,
             int b1, int b2, int b3,
             int c1, int c2, int c3)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using DlxLib;
 using TetrisCubeDlx;
@@ -12,7 +13,7 @@ namespace TetrisCubeDlxConsole
         {
             var pieces = Pieces.MakePieces();
             var internalRows = InternalRowBuilder.BuildInternalRows(pieces);
-            var dlxMatrix = DlxMatrixBuilder.BuildDlxMatrix(internalRows, pieces).ToList();
+            var dlxMatrix = DlxMatrixBuilder.BuildDlxMatrix(internalRows, pieces).ToImmutableList();
 
             var solution = new Dlx().Solve(dlxMatrix, rows => rows, row => row.Bits).First();
 
@@ -43,7 +44,7 @@ namespace TetrisCubeDlxConsole
             DumpSolutionCubeHorizontalSlice(internalRows, 0);
         }
 
-        private static void DumpSolutionCubeHorizontalSlice(IList<InternalRow> internalRows, int y)
+        private static void DumpSolutionCubeHorizontalSlice(IReadOnlyCollection<InternalRow> internalRows, int y)
         {
             for (var z = 3; z >= 0; z--)
             {

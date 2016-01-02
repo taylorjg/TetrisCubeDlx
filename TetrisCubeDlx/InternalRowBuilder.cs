@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace TetrisCubeDlx
@@ -12,31 +13,31 @@ namespace TetrisCubeDlx
                 from y in Enumerable.Range(0, 4)
                 from z in Enumerable.Range(0, 4)
                 select new Coords(x, y, z))
-                .ToList();
+                .ToImmutableList();
 
             return
                 from piece in pieces
                 from rotatedPiece in UniqueRotations.OfPiece(piece)
                 from location in allLocations
                 let placedPiece = new PlacedPiece(rotatedPiece, location)
-                where PlacedPieceIsWithinCube(placedPiece)
+                where placedPiece.IsWithinCube()
                 select new InternalRow(placedPiece);
         }
 
-        private static bool PlacedPieceIsWithinCube(PlacedPiece placedPiece)
+        private static bool IsWithinCube(this PlacedPiece placedPiece)
         {
-            return placedPiece.OccupiedSquares.All(OccupiedSquareIsWithinCube);
+            return placedPiece.OccupiedSquares.All(IsWithinCube);
         }
 
-        private static bool OccupiedSquareIsWithinCube(Coords coords)
+        private static bool IsWithinCube(this Coords coords)
         {
             return
-                DimensionIsWithinCube(coords.X) &&
-                DimensionIsWithinCube(coords.Y) &&
-                DimensionIsWithinCube(coords.Z);
+                coords.X.IsWithinCube() &&
+                coords.Y.IsWithinCube() &&
+                coords.Z.IsWithinCube();
         }
 
-        private static bool DimensionIsWithinCube(int d)
+        private static bool IsWithinCube(this int d)
         {
             return d >= 0 && d <= 3;
         }

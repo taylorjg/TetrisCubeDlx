@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace TetrisCubeDlx
@@ -20,35 +21,35 @@ namespace TetrisCubeDlx
             Height = initStrings[0].Length;
             Depth = initStrings.Count;
 
-            _squares = new bool[Width, Height, Depth];
+            var allSquares = AllSquares;
+            var flags = new bool[Width, Height, Depth];
 
-            foreach (var coords in AllSquares)
+            foreach (var coords in allSquares)
             {
                 var invertedHeight = Height - coords.Y - 1;
-                _squares[coords.X, coords.Y, coords.Z] = initStrings[coords.Z][invertedHeight][coords.X] == 'X';
+                flags[coords.X, coords.Y, coords.Z] = initStrings[coords.Z][invertedHeight][coords.X] == 'X';
             }
-        }
 
-        private readonly bool[,,] _squares;
+            OccupiedSquares = allSquares.Where(coords => FlagsIsSet(flags, coords)).ToImmutableList();
+        }
 
         public Colour Colour { get; }
         public string Name { get; }
         public int Width { get; }
         public int Height { get; }
         public int Depth { get; }
+        public IImmutableList<Coords> OccupiedSquares { get; }
 
-        public IEnumerable<Coords> OccupiedSquares =>
-            AllSquares.Where(IsSquareOccupied);
-
-        private IEnumerable<Coords> AllSquares =>
+        private IImmutableList<Coords> AllSquares => (
             from x in Enumerable.Range(0, Width)
             from y in Enumerable.Range(0, Height)
             from z in Enumerable.Range(0, Depth)
-            select new Coords(x, y, z);
+            select new Coords(x, y, z))
+            .ToImmutableList();
 
-        private bool IsSquareOccupied(Coords coords)
+        private static bool FlagsIsSet(bool[,,] flags, Coords coords)
         {
-            return _squares[coords.X, coords.Y, coords.Z];
+            return flags[coords.X, coords.Y, coords.Z];
         }
     }
 }

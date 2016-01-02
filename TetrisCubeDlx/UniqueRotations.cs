@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace TetrisCubeDlx
@@ -92,15 +91,15 @@ namespace TetrisCubeDlx
         {
             public bool Equals(RotatedPiece rotatedPiece1, RotatedPiece rotatedPiece2)
             {
-                var occupiedSquares1 = rotatedPiece1.OccupiedSquares.ToImmutableList();
-                var occupiedSquares2 = rotatedPiece2.OccupiedSquares.ToImmutableList();
+                var occupiedSquares1 = rotatedPiece1.OccupiedSquares;
+                var occupiedSquares2 = rotatedPiece2.OccupiedSquares;
 
                 return
                     occupiedSquares1.Except(occupiedSquares2).IsEmpty() &&
                     occupiedSquares2.Except(occupiedSquares1).IsEmpty();
             }
 
-            public int GetHashCode(RotatedPiece obj)
+            public int GetHashCode(RotatedPiece _)
             {
                 return 0;
             }

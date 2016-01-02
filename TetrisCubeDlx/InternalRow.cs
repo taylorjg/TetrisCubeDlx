@@ -1,18 +1,18 @@
-using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace TetrisCubeDlx
 {
     public class InternalRow
     {
-        private readonly PlacedPiece _placedPiece;
-
         public InternalRow(PlacedPiece placedPiece)
         {
-            _placedPiece = placedPiece;
+            Name = placedPiece.Name;
+            Colour = placedPiece.Colour;
+            OccupiedSquares = placedPiece.OccupiedSquares;
         }
 
-        public string Name => _placedPiece.Name;
-        public Colour Colour => _placedPiece.Colour;
-        public IEnumerable<Coords> OccupiedSquares => _placedPiece.OccupiedSquares;
+        public string Name { get; }
+        public Colour Colour { get; }
+        public IImmutableList<Coords> OccupiedSquares { get; }
     }
 }
