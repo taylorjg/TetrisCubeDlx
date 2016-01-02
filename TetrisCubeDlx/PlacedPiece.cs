@@ -17,9 +17,7 @@ namespace TetrisCubeDlx
         public string Name => _rotatedPiece.Name;
         public Colour Colour => _rotatedPiece.Colour;
 
-        public IEnumerable<Coords> OccupiedSquares()
-        {
-            return _rotatedPiece.OccupiedSquares().Select(coords => coords + _location);
-        }
+        public IEnumerable<Coords> OccupiedSquares =>
+            _rotatedPiece.OccupiedSquares.Select(coords => coords + _location);
     }
 }

@@ -24,12 +24,10 @@ namespace TetrisCubeDlx
         public string Name => _piece.Name;
         public Colour Colour => _piece.Colour;
 
-        public IEnumerable<Coords> OccupiedSquares()
-        {
-            return _piece.OccupiedSquares()
+        public IEnumerable<Coords> OccupiedSquares =>
+            _piece.OccupiedSquares
                 .Select(_rotationMatrix.Multiply)
                 .Select(coords => coords - _correctionCoords);
-        }
 
         private static readonly IDictionary<Rotation, Matrix> RotationToMatrixDictionary = new Dictionary<Rotation, Matrix>
         {

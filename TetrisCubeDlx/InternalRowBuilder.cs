@@ -25,7 +25,7 @@ namespace TetrisCubeDlx
 
         private static bool PlacedPieceIsWithinCube(PlacedPiece placedPiece)
         {
-            return placedPiece.OccupiedSquares().All(OccupiedSquareIsWithinCube);
+            return placedPiece.OccupiedSquares.All(OccupiedSquareIsWithinCube);
         }
 
         private static bool OccupiedSquareIsWithinCube(Coords coords)

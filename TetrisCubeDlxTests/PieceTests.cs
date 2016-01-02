@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TetrisCubeDlx;
 
 namespace TetrisCubeDlxTests
@@ -62,12 +61,7 @@ namespace TetrisCubeDlxTests
                 new Coords(0, 1, 2)
             };
 
-            CollectionAssert.AreEquivalent(occupiedSquares, piece.OccupiedSquares());
-
-            Assert.That(occupiedSquares, Is.All.Matches<Coords>(piece.IsSquareOccupied), "occupiedSquares");
-
-            var vacantSquares = piece.AllSquares.Except(occupiedSquares);
-            Assert.That(vacantSquares, Is.All.Matches<Coords>(c => !piece.IsSquareOccupied(c)), "vacantSquares");
+            CollectionAssert.AreEquivalent(occupiedSquares, piece.OccupiedSquares);
         }
     }
 }

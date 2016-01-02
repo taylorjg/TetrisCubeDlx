@@ -13,6 +13,6 @@ namespace TetrisCubeDlx
 
         public string Name => _placedPiece.Name;
         public Colour Colour => _placedPiece.Colour;
-        public IEnumerable<Coords> OccupiedSquares => _placedPiece.OccupiedSquares();
+        public IEnumerable<Coords> OccupiedSquares => _placedPiece.OccupiedSquares;
     }
 }

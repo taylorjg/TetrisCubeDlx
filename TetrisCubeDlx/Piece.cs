@@ -37,20 +37,18 @@ namespace TetrisCubeDlx
         public int Height { get; }
         public int Depth { get; }
 
-        public IEnumerable<Coords> AllSquares =>
+        public IEnumerable<Coords> OccupiedSquares =>
+            AllSquares.Where(IsSquareOccupied);
+
+        private IEnumerable<Coords> AllSquares =>
             from x in Enumerable.Range(0, Width)
             from y in Enumerable.Range(0, Height)
             from z in Enumerable.Range(0, Depth)
             select new Coords(x, y, z);
 
-        public bool IsSquareOccupied(Coords coords)
+        private bool IsSquareOccupied(Coords coords)
         {
             return _squares[coords.X, coords.Y, coords.Z];
-        }
-
-        public IEnumerable<Coords> OccupiedSquares()
-        {
-            return AllSquares.Where(IsSquareOccupied);
         }
     }
 }

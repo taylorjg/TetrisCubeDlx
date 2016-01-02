@@ -207,14 +207,14 @@ namespace TetrisCubeDlxTests
             var rotationType = typeof(Rotation);
             var rotations = rotationNames.Select(rn => Enum.Parse(rotationType, rn)).Cast<Rotation>().ToArray();
             var rotatedPiece = new RotatedPiece(_piece, rotations);
-            CollectionAssert.AreEqual(_piece.OccupiedSquares(), rotatedPiece.OccupiedSquares());
+            CollectionAssert.AreEqual(_piece.OccupiedSquares, rotatedPiece.OccupiedSquares);
         }
 
         private static void AssertRotatedPiece(
             RotatedPiece rotatedPiece,
             IEnumerable<Coords> occupiedSquares)
         {
-            CollectionAssert.AreEquivalent(occupiedSquares, rotatedPiece.OccupiedSquares());
+            CollectionAssert.AreEquivalent(occupiedSquares, rotatedPiece.OccupiedSquares);
         }
     }
 }

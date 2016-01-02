@@ -31,6 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.1.37\lib\dotnet\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
@@ -44,6 +48,7 @@
     <Compile Include="Coords.cs" />
     <Compile Include="DlxMatrixBuilder.cs" />
     <Compile Include="DlxMatrixRow.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="InternalRow.cs" />
     <Compile Include="InternalRowBuilder.cs" />
     <Compile Include="Matrix.cs" />
@@ -55,6 +60,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RotatedPiece.cs" />
     <Compile Include="UniqueRotations.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
