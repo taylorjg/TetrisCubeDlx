@@ -42,9 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Coords.cs" />
+    <Compile Include="DlxMatrixBuilder.cs" />
+    <Compile Include="DlxMatrixRow.cs" />
+    <Compile Include="InternalRow.cs" />
+    <Compile Include="InternalRowBuilder.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Colour.cs" />
     <Compile Include="Pieces.cs" />
+    <Compile Include="PlacedPiece.cs" />
     <Compile Include="Rotation.cs" />
     <Compile Include="Piece.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

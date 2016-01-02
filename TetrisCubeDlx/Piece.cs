@@ -14,9 +14,8 @@ namespace TetrisCubeDlx
             // all slices (inner arrays) must have the same length (= piece height)
             // every char (string element) must be a space or 'X'
 
-            _colour = colour;
-            _name = name;
-
+            Colour = colour;
+            Name = name;
             Width = initStrings[0][0].Length;
             Height = initStrings[0].Length;
             Depth = initStrings.Count;
@@ -31,9 +30,9 @@ namespace TetrisCubeDlx
         }
 
         private readonly bool[,,] _squares;
-        private readonly Colour _colour;
-        private readonly string _name;
 
+        public Colour Colour { get; }
+        public string Name { get; }
         public int Width { get; }
         public int Height { get; }
         public int Depth { get; }

@@ -21,6 +21,9 @@ namespace TetrisCubeDlx
             _correctionCoords = new Coords(xCorrection, yCorrection, zCorrection);
         }
 
+        public string Name => _piece.Name;
+        public Colour Colour => _piece.Colour;
+
         public IEnumerable<Coords> OccupiedSquares()
         {
             return _piece.OccupiedSquares()
