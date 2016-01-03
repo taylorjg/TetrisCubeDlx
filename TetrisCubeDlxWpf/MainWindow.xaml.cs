@@ -18,13 +18,27 @@ namespace TetrisCubeDlxWpf
         private readonly Queue<IImmutableList<InternalRow>> _queue = new Queue<IImmutableList<InternalRow>>();
         private CancellationTokenSource _cancellationTokenSource;
         private PuzzleSolver _puzzleSolver;
+        private readonly Dictionary<string, Tuple<InternalRow, Model3DGroup>> _dictionary =
+            new Dictionary<string, Tuple<InternalRow, Model3DGroup>>();
+        private readonly InternalRowEqualityComparer _comparer = new InternalRowEqualityComparer();
+        private readonly Dictionary<Colour, Color> _colourLookup =
+            new Dictionary<Colour, Color>
+            {
+                { Colour.Orange, Colors.Orange},
+                { Colour.Cerise, Colors.Purple},
+                { Colour.Magenta, Colors.Magenta},
+                { Colour.Red, Colors.OrangeRed},
+                { Colour.Green, Colors.ForestGreen},
+                { Colour.Yellow, Colors.Yellow},
+                { Colour.Blue, Colors.DodgerBlue}
+            };
 
         public MainWindow()
         {
             InitializeComponent();
 
             _timer.Tick += (_, __) => OnTick();
-            _timer.Interval = TimeSpan.FromMilliseconds(100);
+            _timer.Interval = TimeSpan.FromMilliseconds(20);
 
             ContentRendered += (_, __) =>
             {
@@ -109,16 +123,101 @@ namespace TetrisCubeDlxWpf
             Viewport3D.Children.Add(wireframeCube);
         }
 
+        private GeometryModel3D CreateUnitCubeGeometryModel(InternalRow internalRow, Coords coords)
+        {
+            return new GeometryModel3D
+            {
+                Geometry = new MeshGeometry3D
+                {
+                    Positions = new Point3DCollection
+                    {
+                        new Point3D(coords.X, coords.Y, -coords.Z),
+                        new Point3D(coords.X + 1, coords.Y, -coords.Z),
+                        new Point3D(coords.X + 0.5, coords.Y + 1, -coords.Z),
+                    },
+                    TriangleIndices = new Int32Collection
+                    {
+                        0,
+                        1,
+                        2
+                    }
+                },
+                Material = new DiffuseMaterial(new SolidColorBrush(_colourLookup[internalRow.Colour]))
+            };
+        }
+
+        private Model3DGroup CreateModelGroupForInternalRow(InternalRow internalRow)
+        {
+            var modelGroup = new Model3DGroup();
+            foreach (var coords in internalRow.OccupiedSquares)
+            {
+                var geometryModel = CreateUnitCubeGeometryModel(internalRow, coords);
+                modelGroup.Children.Add(geometryModel);
+            }
+            return modelGroup;
+        }
+
+        private void AddModelGroupForInternalRow(InternalRow internalRow)
+        {
+            var modelGroup = CreateModelGroupForInternalRow(internalRow);
+            CubeGroup.Children.Add(modelGroup);
+            _dictionary[internalRow.Name] = Tuple.Create(internalRow, modelGroup);
+        }
+
+        private void RemoveModelGroupForInternalRow(Tuple<InternalRow, Model3DGroup> tuple)
+        {
+            var internalRow = tuple.Item1;
+            var geometryModel = tuple.Item2;
+            CubeGroup.Children.Remove(geometryModel);
+            _dictionary.Remove(internalRow.Name);
+        }
+
         private void OnTick()
         {
-            if (!_queue.Any()) return;
+            if (_queue.IsEmpty())
+                return;
 
             var internalRows = _queue.Dequeue();
 
             if (internalRows == null)
             {
                 _timer.Stop();
-                // return;
+                return;
+            }
+
+            AdjustPlacedPieces(internalRows);
+        }
+
+        private void AdjustPlacedPieces(IImmutableList<InternalRow> internalRows)
+        {
+            foreach (var internalRow in internalRows)
+            {
+                Tuple<InternalRow, Model3DGroup> tuple;
+                if (_dictionary.TryGetValue(internalRow.Name, out tuple))
+                    if (!_comparer.Equals(internalRow, tuple.Item1))
+                        RemoveModelGroupForInternalRow(tuple);
+            }
+
+            foreach (var internalRow in internalRows)
+                if (!_dictionary.ContainsKey(internalRow.Name))
+                    AddModelGroupForInternalRow(internalRow);
+        }
+
+        private class InternalRowEqualityComparer : IEqualityComparer<InternalRow>
+        {
+            public bool Equals(InternalRow internalRow1, InternalRow internalRow2)
+            {
+                var occupiedSquares1 = internalRow1.OccupiedSquares;
+                var occupiedSquares2 = internalRow2.OccupiedSquares;
+
+                return
+                    occupiedSquares1.Except(occupiedSquares2).IsEmpty() &&
+                    occupiedSquares2.Except(occupiedSquares1).IsEmpty();
+            }
+
+            public int GetHashCode(InternalRow _)
+            {
+                return 0;
             }
         }
 
