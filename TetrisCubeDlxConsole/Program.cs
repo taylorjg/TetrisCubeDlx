@@ -11,8 +11,8 @@ namespace TetrisCubeDlxConsole
     {
         private static void Main()
         {
-            var internalRows = InternalRowBuilder.BuildInternalRows(Puzzle.Pieces);
-            var dlxMatrix = DlxMatrixBuilder.BuildDlxMatrix(internalRows, Puzzle.Pieces);
+            var internalRows = InternalRowBuilder.BuildInternalRows();
+            var dlxMatrix = DlxMatrixBuilder.BuildDlxMatrix(internalRows);
 
             var dlx = new Dlx();
             var solution = dlx.Solve(dlxMatrix, rows => rows, row => row.Bits).FirstOrDefault();

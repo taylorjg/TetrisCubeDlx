@@ -7,6 +7,9 @@ namespace TetrisCubeDlx
 {
     public static class Puzzle
     {
+        public static int CubeSize => 4;
+        public static int CubeSizeSquared => CubeSize*CubeSize;
+        public static int CubeSizeCubed => CubeSize*CubeSize*CubeSize;
         public static IImmutableList<Piece> Pieces => LazyPieces.Value;
 
         private static readonly Lazy<IImmutableList<Piece>> LazyPieces =

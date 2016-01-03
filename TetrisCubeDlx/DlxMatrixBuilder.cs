@@ -6,11 +6,9 @@ namespace TetrisCubeDlx
 {
     public static class DlxMatrixBuilder
     {
-        public static IImmutableList<DlxMatrixRow> BuildDlxMatrix(
-            IEnumerable<InternalRow> internalRows,
-            IImmutableList<Piece> pieces)
+        public static IImmutableList<DlxMatrixRow> BuildDlxMatrix(IEnumerable<InternalRow> internalRows)
         {
-            var dictionary = BuildPieceNameToPieceIndexDictionary(pieces);
+            var dictionary = BuildPieceNameToPieceIndexDictionary(Puzzle.Pieces);
 
             return internalRows
                 .Select(internalRow => InternalRowToDlxMatrixRow(dictionary, internalRow))
@@ -29,12 +27,16 @@ namespace TetrisCubeDlx
         {
             var pieceColumnIndex = dictionary[internalRow.Name];
             var numPieces = dictionary.Count;
-            var bits = new int[numPieces + 64];
+            var bits = new int[numPieces + Puzzle.CubeSizeCubed];
             bits[pieceColumnIndex] = 1;
             foreach (var occupiedSquare in internalRow.OccupiedSquares)
             {
-                var squareIndex = numPieces + occupiedSquare.X + occupiedSquare.Y*4 + occupiedSquare.Z*16;
-                bits[squareIndex] = 1;
+                var occupiedSquareIndex =
+                    numPieces +
+                    occupiedSquare.X +
+                    occupiedSquare.Y*Puzzle.CubeSize +
+                    occupiedSquare.Z*Puzzle.CubeSizeSquared;
+                bits[occupiedSquareIndex] = 1;
             }
             return new DlxMatrixRow(bits, internalRow);
         }

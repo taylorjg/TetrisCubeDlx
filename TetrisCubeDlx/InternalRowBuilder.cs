@@ -1,22 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 
 namespace TetrisCubeDlx
 {
     public static class InternalRowBuilder
     {
-        public static IImmutableList<InternalRow> BuildInternalRows(IEnumerable<Piece> pieces)
+        public static IImmutableList<InternalRow> BuildInternalRows()
         {
             var allLocations = (
-                from x in Enumerable.Range(0, 4)
-                from y in Enumerable.Range(0, 4)
-                from z in Enumerable.Range(0, 4)
+                from x in Enumerable.Range(0, Puzzle.CubeSize)
+                from y in Enumerable.Range(0, Puzzle.CubeSize)
+                from z in Enumerable.Range(0, Puzzle.CubeSize)
                 select new Coords(x, y, z))
                 .ToImmutableList();
 
             return (
-                from piece in pieces
+                from piece in Puzzle.Pieces
                 from rotatedPiece in UniqueRotations.OfPiece(piece)
                 from location in allLocations
                 let placedPiece = new PlacedPiece(rotatedPiece, location)
@@ -42,7 +41,7 @@ namespace TetrisCubeDlx
         {
             return
                 dimension >= 0 &&
-                dimension <= 3;
+                dimension < Puzzle.CubeSize;
         }
     }
 }
