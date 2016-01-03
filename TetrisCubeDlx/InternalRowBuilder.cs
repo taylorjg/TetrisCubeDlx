@@ -6,7 +6,7 @@ namespace TetrisCubeDlx
 {
     public static class InternalRowBuilder
     {
-        public static IEnumerable<InternalRow> BuildInternalRows(IEnumerable<Piece> pieces)
+        public static IImmutableList<InternalRow> BuildInternalRows(IEnumerable<Piece> pieces)
         {
             var allLocations = (
                 from x in Enumerable.Range(0, 4)
@@ -15,13 +15,14 @@ namespace TetrisCubeDlx
                 select new Coords(x, y, z))
                 .ToImmutableList();
 
-            return
+            return (
                 from piece in pieces
                 from rotatedPiece in UniqueRotations.OfPiece(piece)
                 from location in allLocations
                 let placedPiece = new PlacedPiece(rotatedPiece, location)
                 where placedPiece.IsWithinCube()
-                select new InternalRow(placedPiece);
+                select new InternalRow(placedPiece))
+                .ToImmutableList();
         }
 
         private static bool IsWithinCube(this PlacedPiece placedPiece)

@@ -1,32 +1,38 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace TetrisCubeDlx
 {
     public static class DlxMatrixBuilder
     {
-        public static IEnumerable<DlxMatrixRow> BuildDlxMatrix(
+        public static IImmutableList<DlxMatrixRow> BuildDlxMatrix(
             IEnumerable<InternalRow> internalRows,
-            IEnumerable<Piece> pieces)
+            IImmutableList<Piece> pieces)
+        {
+            var dictionary = BuildPieceNameToPieceIndexDictionary(pieces);
+            return internalRows
+                .Select(internalRow => InternalRowToDlxMatrixRow(dictionary, internalRow))
+                .ToImmutableList();
+        }
+
+        private static IReadOnlyDictionary<string, int> BuildPieceNameToPieceIndexDictionary(IEnumerable<Piece> pieces)
         {
             var pieceIndex = 0;
-            var pieceNameToPieceIndexDictionary = pieces.ToDictionary(piece => piece.Name, _ => pieceIndex++);
-            var numPieceIndexColumns = pieceNameToPieceIndexDictionary.Count;
-            return internalRows.Select(internalRow =>
-                InternalRowToDlxMatrixRow(internalRow, pieceNameToPieceIndexDictionary, numPieceIndexColumns));
+            return pieces.ToDictionary(piece => piece.Name, _ => pieceIndex++);
         }
 
         private static DlxMatrixRow InternalRowToDlxMatrixRow(
-            InternalRow internalRow,
-            IReadOnlyDictionary<string, int> pieceNameToPieceIndexDictionary,
-            int numPieceIndexColumns)
+            IReadOnlyDictionary<string, int> dictionary,
+            InternalRow internalRow)
         {
-            var pieceColumnIndex = pieceNameToPieceIndexDictionary[internalRow.Name];
-            var bits = new int[numPieceIndexColumns + 64];
+            var pieceColumnIndex = dictionary[internalRow.Name];
+            var numPieces = dictionary.Count;
+            var bits = new int[numPieces + 64];
             bits[pieceColumnIndex] = 1;
             foreach (var occupiedSquare in internalRow.OccupiedSquares)
             {
-                var squareIndex = numPieceIndexColumns + occupiedSquare.X + occupiedSquare.Y*4 + occupiedSquare.Z*16;
+                var squareIndex = numPieces + occupiedSquare.X + occupiedSquare.Y*4 + occupiedSquare.Z*16;
                 bits[squareIndex] = 1;
             }
             return new DlxMatrixRow(bits, internalRow);

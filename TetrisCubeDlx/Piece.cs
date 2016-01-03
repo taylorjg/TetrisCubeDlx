@@ -21,16 +21,13 @@ namespace TetrisCubeDlx
             Height = initStrings[0].Length;
             Depth = initStrings.Count;
 
-            var allSquares = AllSquares;
-            var flags = new bool[Width, Height, Depth];
-
-            foreach (var coords in allSquares)
-            {
-                var invertedHeight = Height - coords.Y - 1;
-                flags[coords.X, coords.Y, coords.Z] = initStrings[coords.Z][invertedHeight][coords.X] == 'X';
-            }
-
-            OccupiedSquares = allSquares.Where(coords => FlagsIsSet(flags, coords)).ToImmutableList();
+            OccupiedSquares = (
+                from x in Enumerable.Range(0, Width)
+                from y in Enumerable.Range(0, Height)
+                from z in Enumerable.Range(0, Depth)
+                where initStrings[z][Height - y - 1][x] == 'X'
+                select new Coords(x, y, z))
+                .ToImmutableList();
         }
 
         public Colour Colour { get; }
@@ -39,17 +36,5 @@ namespace TetrisCubeDlx
         public int Height { get; }
         public int Depth { get; }
         public IImmutableList<Coords> OccupiedSquares { get; }
-
-        private IImmutableList<Coords> AllSquares => (
-            from x in Enumerable.Range(0, Width)
-            from y in Enumerable.Range(0, Height)
-            from z in Enumerable.Range(0, Depth)
-            select new Coords(x, y, z))
-            .ToImmutableList();
-
-        private static bool FlagsIsSet(bool[,,] flags, Coords coords)
-        {
-            return flags[coords.X, coords.Y, coords.Z];
-        }
     }
 }
