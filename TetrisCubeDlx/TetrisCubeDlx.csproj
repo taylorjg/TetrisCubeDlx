@@ -51,6 +51,7 @@
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="InternalRow.cs" />
     <Compile Include="InternalRowBuilder.cs" />
+    <Compile Include="IPuzzle.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Colour.cs" />
     <Compile Include="Puzzle.cs" />

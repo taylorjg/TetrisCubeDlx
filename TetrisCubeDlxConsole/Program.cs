@@ -11,8 +11,9 @@ namespace TetrisCubeDlxConsole
     {
         private static void Main()
         {
-            var internalRows = InternalRowBuilder.BuildInternalRows();
-            var dlxMatrix = DlxMatrixBuilder.BuildDlxMatrix(internalRows);
+            var puzzle = new Puzzle();
+            var internalRows = InternalRowBuilder.BuildInternalRows(puzzle);
+            var dlxMatrix = DlxMatrixBuilder.BuildDlxMatrix(puzzle, internalRows);
 
             var dlx = new Dlx();
             var solution = dlx.Solve(dlxMatrix, rows => rows, row => row.Bits).FirstOrDefault();
@@ -21,7 +22,7 @@ namespace TetrisCubeDlxConsole
             {
                 DumpSolutionSimple(solution, dlxMatrix);
                 Console.WriteLine();
-                DumpSolutionCube(solution, dlxMatrix);
+                DumpSolutionCube(puzzle, solution, dlxMatrix);
             }
         }
 
@@ -35,34 +36,43 @@ namespace TetrisCubeDlxConsole
             }
         }
 
-        private static void DumpSolutionCube(Solution solution, IReadOnlyList<DlxMatrixRow> dlxMatrix)
+        private static void DumpSolutionCube(IPuzzle puzzle, Solution solution, IReadOnlyList<DlxMatrixRow> dlxMatrix)
         {
             var internalRows = solution.RowIndexes
                 .Select(rowIndex => dlxMatrix[rowIndex].InternalRow)
                 .ToImmutableList();
 
-            DumpSolutionCubeHorizontalSlice(internalRows, 3);
-            DumpSolutionCubeHorizontalSlice(internalRows, 2);
-            DumpSolutionCubeHorizontalSlice(internalRows, 1);
-            DumpSolutionCubeHorizontalSlice(internalRows, 0);
+            foreach (var y in puzzle.DescendingDimensionIndices)
+                DumpSolutionCubeHorizontalSlice(puzzle, internalRows, y);
         }
 
-        private static void DumpSolutionCubeHorizontalSlice(IReadOnlyCollection<InternalRow> internalRows, int y)
+        private static void DumpSolutionCubeHorizontalSlice(
+            IPuzzle puzzle,
+            IReadOnlyCollection<InternalRow> internalRows,
+            int y)
         {
-            for (var z = 3; z >= 0; z--)
-            {
-                var line = "";
-                for (var x = 0; x <= 3; x++)
-                {
-                    var coords = new Coords(x, y, z);
-                    var internalRow = FindInternalRowAt(internalRows, coords);
-                    var name = internalRow.Name;
-                    line += name;
-                }
-                Console.WriteLine(line);
-            }
+            foreach (var z in puzzle.DescendingDimensionIndices)
+                DumpLine(puzzle, internalRows, y, z);
 
             Console.WriteLine();
+        }
+
+        private static void DumpLine(IPuzzle puzzle, IEnumerable<InternalRow> internalRows, int y, int z)
+        {
+            var line = BuildLine(puzzle, internalRows, y, z);
+            Console.WriteLine(line);
+        }
+
+        private static string BuildLine(IPuzzle puzzle, IEnumerable<InternalRow> internalRows, int y, int z)
+        {
+            var names = puzzle.AscendingDimensionIndices.Select(x =>
+            {
+                var coords = new Coords(x, y, z);
+                var internalRow = FindInternalRowAt(internalRows, coords);
+                return internalRow.Name;
+            });
+
+            return string.Concat(names);
         }
 
         private static InternalRow FindInternalRowAt(IEnumerable<InternalRow> internalRows, Coords coords)

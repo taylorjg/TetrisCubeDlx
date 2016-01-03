@@ -5,43 +5,43 @@ namespace TetrisCubeDlx
 {
     public static class InternalRowBuilder
     {
-        public static IImmutableList<InternalRow> BuildInternalRows()
+        public static IImmutableList<InternalRow> BuildInternalRows(IPuzzle puzzle)
         {
             var allLocations = (
-                from x in Enumerable.Range(0, Puzzle.CubeSize)
-                from y in Enumerable.Range(0, Puzzle.CubeSize)
-                from z in Enumerable.Range(0, Puzzle.CubeSize)
+                from x in puzzle.AscendingDimensionIndices
+                from y in puzzle.AscendingDimensionIndices
+                from z in puzzle.AscendingDimensionIndices
                 select new Coords(x, y, z))
                 .ToImmutableList();
 
             return (
-                from piece in Puzzle.Pieces
+                from piece in puzzle.Pieces
                 from rotatedPiece in UniqueRotations.OfPiece(piece)
                 from location in allLocations
                 let placedPiece = new PlacedPiece(rotatedPiece, location)
-                where placedPiece.IsWithinCube()
+                where placedPiece.IsWithinPuzzle(puzzle)
                 select new InternalRow(placedPiece))
                 .ToImmutableList();
         }
 
-        private static bool IsWithinCube(this PlacedPiece placedPiece)
+        private static bool IsWithinPuzzle(this PlacedPiece placedPiece, IPuzzle puzzle)
         {
-            return placedPiece.OccupiedSquares.All(IsWithinCube);
+            return placedPiece.OccupiedSquares.All(sq => sq.IsWithinPuzzle(puzzle));
         }
 
-        private static bool IsWithinCube(this Coords coords)
+        private static bool IsWithinPuzzle(this Coords coords, IPuzzle puzzle)
         {
             return
-                coords.X.IsWithinCube() &&
-                coords.Y.IsWithinCube() &&
-                coords.Z.IsWithinCube();
+                coords.X.IsWithinPuzzle(puzzle) &&
+                coords.Y.IsWithinPuzzle(puzzle) &&
+                coords.Z.IsWithinPuzzle(puzzle);
         }
 
-        private static bool IsWithinCube(this int dimension)
+        private static bool IsWithinPuzzle(this int dimension, IPuzzle puzzle)
         {
             return
                 dimension >= 0 &&
-                dimension < Puzzle.CubeSize;
+                dimension < puzzle.CubeSize;
         }
     }
 }
