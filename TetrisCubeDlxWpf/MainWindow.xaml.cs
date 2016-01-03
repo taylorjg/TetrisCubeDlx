@@ -1,5 +1,11 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Threading;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 using TetrisCubeDlx;
 using _3DTools;
 
@@ -8,12 +14,37 @@ namespace TetrisCubeDlxWpf
     public partial class MainWindow
     {
         private readonly IPuzzle _puzzle = new Puzzle();
+        private readonly DispatcherTimer _timer = new DispatcherTimer();
+        private readonly Queue<IImmutableList<InternalRow>> _queue = new Queue<IImmutableList<InternalRow>>();
+        private CancellationTokenSource _cancellationTokenSource;
+        private PuzzleSolver _puzzleSolver;
 
         public MainWindow()
         {
             InitializeComponent();
-            DrawWireframeAxes();
-            DrawWireframeCube();
+
+            _timer.Tick += (_, __) => OnTick();
+            _timer.Interval = TimeSpan.FromMilliseconds(100);
+
+            ContentRendered += (_, __) =>
+            {
+                DrawWireframeAxes();
+                DrawWireframeCube();
+
+                _cancellationTokenSource = new CancellationTokenSource();
+
+                _puzzleSolver = new PuzzleSolver(
+                    _puzzle,
+                    OnSolutionFound,
+                    OnSearchStep,
+                    SynchronizationContext.Current,
+                    _cancellationTokenSource.Token);
+
+                _puzzleSolver.SolvePuzzle();
+
+            };
+
+            Closed += (_, __) => _cancellationTokenSource?.Cancel();
         }
 
         private void DrawWireframeAxes()
@@ -76,6 +107,34 @@ namespace TetrisCubeDlxWpf
             };
 
             Viewport3D.Children.Add(wireframeCube);
+        }
+
+        private void OnTick()
+        {
+            if (!_queue.Any()) return;
+
+            var internalRows = _queue.Dequeue();
+
+            if (internalRows == null)
+            {
+                _timer.Stop();
+                // return;
+            }
+        }
+
+        private void OnSolutionFound(IImmutableList<InternalRow> internalRows)
+        {
+            _queue.Enqueue(null);
+            _puzzleSolver = null;
+            _cancellationTokenSource = null;
+        }
+
+        private void OnSearchStep(IImmutableList<InternalRow> internalRows)
+        {
+            _queue.Enqueue(internalRows);
+
+            if (!_timer.IsEnabled)
+                _timer.Start();
         }
     }
 }

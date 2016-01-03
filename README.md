@@ -22,14 +22,14 @@ This repo is another [DlxLib](https://github.com/taylorjg/DlxLib) demo program.
 * Enhance the code to draw the PlacedPiece with the correct colour
 * Enhance the code to tag a model with a PlacedPiece
 * Add code to remove a PlacedPiece
-* Add code to solve the puzzle on a background thread
-    * bounce step/solution events back to the UI thread
-    * enqueue these events
-    * add a timer to process enqueued events
-    * start timer if event is received and timer not currently started
-    * stop timer when solution event is received and timer is currently started
-* Add cancellation support (of the solving process)
-    * invoke cancellation on close of the application (if still solving)
+* ~~Add code to solve the puzzle on a background thread~~
+    * ~~bounce step/solution events back to the UI thread~~
+    * ~~enqueue these events~~
+    * ~~add a timer to process enqueued events~~
+    * ~~start timer if event is received and timer not currently started~~
+    * ~~stop timer when solution event is received and timer is currently started~~
+* ~~Add cancellation support (of the solving process)~~
+    * ~~invoke cancellation on close of the application (if still solving)~~
 * Add code to render a particular set of PlacedPieces
     * leave alone PlacedPieces that are being rendered in the correct place
     * remove PlacedPieces that are being rendered in the wrong place
