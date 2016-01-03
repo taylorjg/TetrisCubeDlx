@@ -11,6 +11,7 @@ namespace TetrisCubeDlx
             IImmutableList<Piece> pieces)
         {
             var dictionary = BuildPieceNameToPieceIndexDictionary(pieces);
+
             return internalRows
                 .Select(internalRow => InternalRowToDlxMatrixRow(dictionary, internalRow))
                 .ToImmutableList();

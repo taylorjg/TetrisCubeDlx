@@ -38,9 +38,11 @@ namespace TetrisCubeDlx
                 coords.Z.IsWithinCube();
         }
 
-        private static bool IsWithinCube(this int d)
+        private static bool IsWithinCube(this int dimension)
         {
-            return d >= 0 && d <= 3;
+            return
+                dimension >= 0 &&
+                dimension <= 3;
         }
     }
 }
