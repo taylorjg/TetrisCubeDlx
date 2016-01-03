@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="3DTools, Version=1.0.2614.20437, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\3DTools.dll</HintPath>
+    </Reference>
     <Reference Include="DlxLib, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DlxLib.1.3.0.0\lib\net40\DlxLib.dll</HintPath>
       <Private>True</Private>
@@ -105,6 +109,10 @@
       <Project>{01634cf9-c545-41b0-9627-d2e5bc8bf47b}</Project>
       <Name>TetrisCubeDlx</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libs\3DTools.dll" />
+    <Content Include="libs\3DTools.pdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
