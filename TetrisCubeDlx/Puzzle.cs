@@ -5,14 +5,10 @@ using System.Linq;
 
 namespace TetrisCubeDlx
 {
-    public class Puzzle : IPuzzle
+    public class Puzzle : PuzzleBase
     {
-        public int CubeSize => 4;
-        public int CubeSizeSquared => CubeSize*CubeSize;
-        public int CubeSizeCubed => CubeSize*CubeSize*CubeSize;
-        public IEnumerable<int> AscendingDimensionIndices => Enumerable.Range(0, CubeSize);
-        public IEnumerable<int> DescendingDimensionIndices => Enumerable.Range(0, CubeSize).Reverse();
-        public IEnumerable<Piece> Pieces => LazyPieces.Value;
+        public override int CubeSize => 4;
+        public override IEnumerable<Piece> Pieces => LazyPieces.Value;
 
         private static readonly Lazy<IImmutableList<Piece>> LazyPieces =
             new Lazy<IImmutableList<Piece>>(MakeAllPieces);

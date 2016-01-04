@@ -54,6 +54,7 @@
     <Compile Include="IPuzzle.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Colour.cs" />
+    <Compile Include="PuzzleBase.cs" />
     <Compile Include="Puzzle.cs" />
     <Compile Include="PlacedPiece.cs" />
     <Compile Include="Rotation.cs" />
