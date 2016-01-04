@@ -45,7 +45,7 @@ namespace TetrisCubeDlxWpf
             InitializeComponent();
 
             _timer.Tick += (_, __) => OnTick();
-            _timer.Interval = TimeSpan.FromMilliseconds(1);
+            _timer.Interval = TimeSpan.FromMilliseconds(50);
 
             ContentRendered += (_, __) =>
             {
