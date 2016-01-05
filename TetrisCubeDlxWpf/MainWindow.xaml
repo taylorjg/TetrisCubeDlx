@@ -14,9 +14,10 @@
             <ModelVisual3D>
                 <ModelVisual3D.Content>
                     <Model3DGroup x:Name="CubeGroup">
-                        <DirectionalLight Direction="0,0,-1" />
+                        <!--<DirectionalLight Direction="0,0,-1" />-->
                         <PointLight Color="White" Position="-4.5,5,-2" />
                         <PointLight Color="White" Position="2,10,-2" />
+                        <SpotLight Color="White" Position="-4.5,5,15" Direction="0.4,-0.2,-1" InnerConeAngle="8" OuterConeAngle="12" />
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>

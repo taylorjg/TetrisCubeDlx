@@ -24,13 +24,6 @@ namespace TetrisCubeDlxWpf
         private readonly Dictionary<Colour, Color> _colourLookup =
             new Dictionary<Colour, Color>
             {
-                //{ Colour.Orange, Colors.Orange},
-                //{ Colour.Cerise, Colors.DeepPink},
-                //{ Colour.Magenta, Colors.Magenta},
-                //{ Colour.Red, Colors.OrangeRed},
-                //{ Colour.Green, Colors.MediumSeaGreen},
-                //{ Colour.Yellow, Colors.Yellow},
-                //{ Colour.Blue, Colors.DodgerBlue},
                 { Colour.Orange, Color.FromRgb(0xFB, 0x89, 0x29)},
                 { Colour.Cerise, Color.FromRgb(0xEB, 0x2A, 0x6D)},
                 { Colour.Magenta, Color.FromRgb(0xE8, 0x3C, 0x91)},
@@ -45,7 +38,7 @@ namespace TetrisCubeDlxWpf
             InitializeComponent();
 
             _timer.Tick += (_, __) => OnTick();
-            _timer.Interval = TimeSpan.FromMilliseconds(50);
+            _timer.Interval = TimeSpan.FromMilliseconds(500);
 
             ContentRendered += (_, __) =>
             {
@@ -68,27 +61,27 @@ namespace TetrisCubeDlxWpf
             Closed += (_, __) => _cancellationTokenSource?.Cancel();
         }
 
-        private void DrawWireframeAxes()
-        {
-            var points = new Point3DCollection
-            {
-                new Point3D(-100, 0, 0),
-                new Point3D(+100, 0, 0),
-                new Point3D(0, -100, 0),
-                new Point3D(0, +100, 0),
-                new Point3D(0, 0, -100),
-                new Point3D(0, 0, +100)
-            };
-
-            var wireframeAxes = new ScreenSpaceLines3D
-            {
-                Points = points,
-                Color = Colors.Red,
-                Thickness = 0.5
-            };
-
-            Viewport3D.Children.Add(wireframeAxes);
-        }
+        // private void DrawWireframeAxes()
+        // {
+        //     var points = new Point3DCollection
+        //     {
+        //         new Point3D(-100, 0, 0),
+        //         new Point3D(+100, 0, 0),
+        //         new Point3D(0, -100, 0),
+        //         new Point3D(0, +100, 0),
+        //         new Point3D(0, 0, -100),
+        //         new Point3D(0, 0, +100)
+        //     };
+        // 
+        //     var wireframeAxes = new ScreenSpaceLines3D
+        //     {
+        //         Points = points,
+        //         Color = Colors.Red,
+        //         Thickness = 0.5
+        //     };
+        // 
+        //     Viewport3D.Children.Add(wireframeAxes);
+        // }
 
         private void DrawWireframeCube()
         {
@@ -158,7 +151,7 @@ namespace TetrisCubeDlxWpf
                         new SpecularMaterial
                         {
                             Color = Colors.White,
-                            SpecularPower = 30.0d
+                            SpecularPower = 50.0d
                         }
                     }
                 },
@@ -178,87 +171,166 @@ namespace TetrisCubeDlxWpf
 
         private static void AddFace(Point3DCollection positions, Int32Collection triangleIndices, Face face, Coords coords)
         {
+            const int density = 5;
+            const double delta = 1d/density;
+
             switch (face)
             {
                 case Face.Front:
-                    AddFaceTriangles1(
-                        positions,
-                        triangleIndices,
+                    AddFaceTriangles3(
+                        positions, triangleIndices,
                         new Point3D(coords.X, coords.Y, -coords.Z),
-                        new Point3D(coords.X + 1, coords.Y, -coords.Z),
-                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z),
-                        new Point3D(coords.X, coords.Y + 1, -coords.Z));
+                        new Point3D(coords.X + delta, coords.Y, -coords.Z),
+                        new Point3D(coords.X + delta, coords.Y + delta, -coords.Z),
+                        new Point3D(coords.X, coords.Y + delta, -coords.Z),
+                        density,
+                        0, delta, 0,
+                        delta, 0, 0);
                     break;
 
                 case Face.Back:
-                    AddFaceTriangles1(
-                        positions,
-                        triangleIndices,
-                        new Point3D(coords.X + 1, coords.Y, -coords.Z - 1),
+                    AddFaceTriangles3(
+                        positions, triangleIndices,
+                        new Point3D(coords.X + delta, coords.Y, -coords.Z - 1),
                         new Point3D(coords.X, coords.Y, -coords.Z - 1),
-                        new Point3D(coords.X, coords.Y + 1, -coords.Z - 1),
-                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1));
+                        new Point3D(coords.X, coords.Y + delta, -coords.Z - 1),
+                        new Point3D(coords.X + delta, coords.Y + delta, -coords.Z - 1),
+                        density,
+                        0, delta, 0,
+                        delta, 0, 0);
                     break;
 
                 case Face.Left:
-                    AddFaceTriangles1(
-                        positions,
-                        triangleIndices,
-                        new Point3D(coords.X, coords.Y, -coords.Z - 1),
+                    AddFaceTriangles3(
+                        positions, triangleIndices,
+                        new Point3D(coords.X, coords.Y, -coords.Z - delta),
                         new Point3D(coords.X, coords.Y, -coords.Z),
-                        new Point3D(coords.X, coords.Y + 1, -coords.Z),
-                        new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
+                        new Point3D(coords.X, coords.Y + delta, -coords.Z),
+                        new Point3D(coords.X, coords.Y + delta, -coords.Z - delta),
+                        density,
+                        0, delta, 0,
+                        0, 0, -delta);
                     break;
 
                 case Face.Right:
-                    AddFaceTriangles1(
-                        positions,
-                        triangleIndices,
+                    AddFaceTriangles3(
+                        positions, triangleIndices,
                         new Point3D(coords.X + 1, coords.Y, -coords.Z),
-                        new Point3D(coords.X + 1, coords.Y, -coords.Z - 1),
-                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1),
-                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z));
+                        new Point3D(coords.X + 1, coords.Y, -coords.Z - delta),
+                        new Point3D(coords.X + 1, coords.Y + delta, -coords.Z - delta),
+                        new Point3D(coords.X + 1, coords.Y + delta, -coords.Z),
+                        density,
+                        0, delta, 0,
+                        0, 0, -delta);
                     break;
 
                 case Face.Top:
-                    AddFaceTriangles1(
-                        positions,
-                        triangleIndices,
+                    AddFaceTriangles3(
+                        positions, triangleIndices,
                         new Point3D(coords.X, coords.Y + 1, -coords.Z),
-                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z),
-                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1),
-                        new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
+                        new Point3D(coords.X + delta, coords.Y + 1, -coords.Z),
+                        new Point3D(coords.X + delta, coords.Y + 1, -coords.Z - delta),
+                        new Point3D(coords.X, coords.Y + 1, -coords.Z - delta),
+                        density,
+                        0, 0, -delta,
+                        delta, 0, 0);
                     break;
 
                 case Face.Bottom:
-                    AddFaceTriangles1(
-                        positions,
-                        triangleIndices,
-                        new Point3D(coords.X + 1, coords.Y, -coords.Z - 1),
-                        new Point3D(coords.X + 1, coords.Y, -coords.Z),
+                    AddFaceTriangles3(
+                        positions, triangleIndices,
+                        new Point3D(coords.X + delta, coords.Y, -coords.Z - delta),
+                        new Point3D(coords.X + delta, coords.Y, -coords.Z),
                         new Point3D(coords.X, coords.Y, -coords.Z),
-                        new Point3D(coords.X, coords.Y, -coords.Z - 1));
+                        new Point3D(coords.X, coords.Y, -coords.Z - delta),
+                        density,
+                        delta, 0, 0,
+                        0, 0, -delta);
                     break;
             }
         }
 
-        private static void AddFaceTriangles1(
+        // private static void AddFaceTriangles1(
+        //     Point3DCollection positions,
+        //     Int32Collection triangleIndices,
+        //     Point3D pt1,
+        //     Point3D pt2,
+        //     Point3D pt3,
+        //     Point3D pt4)
+        // {
+        //     positions.Add(pt1);
+        //     positions.Add(pt2);
+        //     positions.Add(pt4);
+        //     Enumerable.Range(triangleIndices.Count, 3).ToList().ForEach(triangleIndices.Add);
+        // 
+        //     positions.Add(pt2);
+        //     positions.Add(pt3);
+        //     positions.Add(pt4);
+        //     Enumerable.Range(triangleIndices.Count, 3).ToList().ForEach(triangleIndices.Add);
+        // }
+
+        // private static void AddFaceTriangles2(
+        //     Point3DCollection positions,
+        //     Int32Collection triangleIndices,
+        //     Point3D pt1,
+        //     Point3D pt2,
+        //     Point3D pt3,
+        //     Point3D pt4)
+        // {
+        //     const int density = 10;
+        //     const double size = 1d/density;
+        // 
+        //     var bottomLeftPoints = (
+        //         from x in Enumerable.Range(0, density)
+        //         from y in Enumerable.Range(0, density)
+        //         select new Point3D(pt1.X + x*size, pt1.Y + y*size, pt1.Z)).ToList();
+        // 
+        //     bottomLeftPoints.ForEach(pt =>
+        //     {
+        //         positions.Add(pt);
+        //         positions.Add(new Point3D(pt.X + size, pt.Y, pt.Z));
+        //         positions.Add(new Point3D(pt.X, pt.Y + size, pt.Z));
+        //         positions.Add(new Point3D(pt.X + size, pt.Y, pt.Z));
+        //         positions.Add(new Point3D(pt.X + size, pt.Y + size, pt.Z));
+        //         positions.Add(new Point3D(pt.X, pt.Y + size, pt.Z));
+        //     });
+        // 
+        //     Enumerable.Range(triangleIndices.Count, 600).ToList().ForEach(triangleIndices.Add);
+        // }
+
+        private static void AddFaceTriangles3(
             Point3DCollection positions,
             Int32Collection triangleIndices,
             Point3D pt1,
             Point3D pt2,
             Point3D pt3,
-            Point3D pt4)
+            Point3D pt4,
+            int density,
+            double dxRow,
+            double dyRow,
+            double dzRow,
+            double dxCol,
+            double dyCol,
+            double dzCol)
         {
-            positions.Add(pt1);
-            positions.Add(pt2);
-            positions.Add(pt4);
-            Enumerable.Range(triangleIndices.Count, 3).ToList().ForEach(triangleIndices.Add);
+            foreach (var row in Enumerable.Range(0, density))
+            {
+                foreach (var col in Enumerable.Range(0, density))
+                {
+                    var pt1A = new Point3D(pt1.X + row*dxRow + col*dxCol, pt1.Y + row*dyRow + col*dyCol, pt1.Z + row*dzRow + col*dzCol);
+                    var pt2A = new Point3D(pt2.X + row*dxRow + col*dxCol, pt2.Y + row*dyRow + col*dyCol, pt2.Z + row*dzRow + col*dzCol);
+                    var pt3A = new Point3D(pt3.X + row*dxRow + col*dxCol, pt3.Y + row*dyRow + col*dyCol, pt3.Z + row*dzRow + col*dzCol);
+                    var pt4A = new Point3D(pt4.X + row*dxRow + col*dxCol, pt4.Y + row*dyRow + col*dyCol, pt4.Z + row*dzRow + col*dzCol);
+                    positions.Add(pt1A);
+                    positions.Add(pt2A);
+                    positions.Add(pt4A);
+                    positions.Add(pt2A);
+                    positions.Add(pt3A);
+                    positions.Add(pt4A);
+                }
+            }
 
-            positions.Add(pt2);
-            positions.Add(pt3);
-            positions.Add(pt4);
-            Enumerable.Range(triangleIndices.Count, 3).ToList().ForEach(triangleIndices.Add);
+            Enumerable.Range(triangleIndices.Count, 6*density*density).ToList().ForEach(triangleIndices.Add);
         }
 
         private Model3DGroup CreateModelGroupForInternalRow(InternalRow internalRow)
