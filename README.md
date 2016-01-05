@@ -27,7 +27,7 @@ This repo is another [DlxLib](https://github.com/taylorjg/DlxLib) demo program.
 
 * ~~Get basic wireframe of the cube working~~
 * ~~Add a method to draw a unit cube at given coords~~
-* Make the unit cubes look nice (shading, etc.)
+* ~~Make the unit cubes look nice (shading, lighting, etc.)~~
 * ~~Enhance the code to draw a collection of unit cubes~~
 * ~~Enhance the code to take a PlacedPiece~~
 * ~~Enhance the code to draw the PlacedPiece with the correct colour~~

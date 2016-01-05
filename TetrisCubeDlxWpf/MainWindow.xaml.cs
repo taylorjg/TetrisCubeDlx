@@ -42,7 +42,7 @@ namespace TetrisCubeDlxWpf
 
             ContentRendered += (_, __) =>
             {
-                //DrawWireframeAxes();
+                // DrawWireframeAxes();
                 DrawWireframeCube();
 
                 _cancellationTokenSource = new CancellationTokenSource();
@@ -115,7 +115,7 @@ namespace TetrisCubeDlxWpf
             {
                 Points = points,
                 Color = Colors.Black,
-                Thickness = 0.5
+                Thickness = 0.2
             };
 
             Viewport3D.Children.Add(wireframeCube);
@@ -171,8 +171,8 @@ namespace TetrisCubeDlxWpf
 
         private static void AddFace(Point3DCollection positions, Int32Collection triangleIndices, Face face, Coords coords)
         {
-            const int density = 5;
-            const double delta = 1d/density;
+            const int triangleDensity = 10;
+            const double delta = 1d/triangleDensity;
 
             switch (face)
             {
@@ -183,7 +183,7 @@ namespace TetrisCubeDlxWpf
                         new Point3D(coords.X + delta, coords.Y, -coords.Z),
                         new Point3D(coords.X + delta, coords.Y + delta, -coords.Z),
                         new Point3D(coords.X, coords.Y + delta, -coords.Z),
-                        density,
+                        triangleDensity,
                         0, delta, 0,
                         delta, 0, 0);
                     break;
@@ -195,7 +195,7 @@ namespace TetrisCubeDlxWpf
                         new Point3D(coords.X, coords.Y, -coords.Z - 1),
                         new Point3D(coords.X, coords.Y + delta, -coords.Z - 1),
                         new Point3D(coords.X + delta, coords.Y + delta, -coords.Z - 1),
-                        density,
+                        triangleDensity,
                         0, delta, 0,
                         delta, 0, 0);
                     break;
@@ -207,7 +207,7 @@ namespace TetrisCubeDlxWpf
                         new Point3D(coords.X, coords.Y, -coords.Z),
                         new Point3D(coords.X, coords.Y + delta, -coords.Z),
                         new Point3D(coords.X, coords.Y + delta, -coords.Z - delta),
-                        density,
+                        triangleDensity,
                         0, delta, 0,
                         0, 0, -delta);
                     break;
@@ -219,7 +219,7 @@ namespace TetrisCubeDlxWpf
                         new Point3D(coords.X + 1, coords.Y, -coords.Z - delta),
                         new Point3D(coords.X + 1, coords.Y + delta, -coords.Z - delta),
                         new Point3D(coords.X + 1, coords.Y + delta, -coords.Z),
-                        density,
+                        triangleDensity,
                         0, delta, 0,
                         0, 0, -delta);
                     break;
@@ -231,7 +231,7 @@ namespace TetrisCubeDlxWpf
                         new Point3D(coords.X + delta, coords.Y + 1, -coords.Z),
                         new Point3D(coords.X + delta, coords.Y + 1, -coords.Z - delta),
                         new Point3D(coords.X, coords.Y + 1, -coords.Z - delta),
-                        density,
+                        triangleDensity,
                         0, 0, -delta,
                         delta, 0, 0);
                     break;
@@ -243,7 +243,7 @@ namespace TetrisCubeDlxWpf
                         new Point3D(coords.X + delta, coords.Y, -coords.Z),
                         new Point3D(coords.X, coords.Y, -coords.Z),
                         new Point3D(coords.X, coords.Y, -coords.Z - delta),
-                        density,
+                        triangleDensity,
                         delta, 0, 0,
                         0, 0, -delta);
                     break;
@@ -305,7 +305,7 @@ namespace TetrisCubeDlxWpf
             Point3D pt2,
             Point3D pt3,
             Point3D pt4,
-            int density,
+            int triangleDensity,
             double dxRow,
             double dyRow,
             double dzRow,
@@ -313,24 +313,27 @@ namespace TetrisCubeDlxWpf
             double dyCol,
             double dzCol)
         {
-            foreach (var row in Enumerable.Range(0, density))
+            foreach (var row in Enumerable.Range(0, triangleDensity))
             {
-                foreach (var col in Enumerable.Range(0, density))
+                foreach (var col in Enumerable.Range(0, triangleDensity))
                 {
-                    var pt1A = new Point3D(pt1.X + row*dxRow + col*dxCol, pt1.Y + row*dyRow + col*dyCol, pt1.Z + row*dzRow + col*dzCol);
-                    var pt2A = new Point3D(pt2.X + row*dxRow + col*dxCol, pt2.Y + row*dyRow + col*dyCol, pt2.Z + row*dzRow + col*dzCol);
-                    var pt3A = new Point3D(pt3.X + row*dxRow + col*dxCol, pt3.Y + row*dyRow + col*dyCol, pt3.Z + row*dzRow + col*dzCol);
-                    var pt4A = new Point3D(pt4.X + row*dxRow + col*dxCol, pt4.Y + row*dyRow + col*dyCol, pt4.Z + row*dzRow + col*dzCol);
-                    positions.Add(pt1A);
-                    positions.Add(pt2A);
-                    positions.Add(pt4A);
-                    positions.Add(pt2A);
-                    positions.Add(pt3A);
-                    positions.Add(pt4A);
+                    var pt1New = new Point3D(pt1.X + row*dxRow + col*dxCol, pt1.Y + row*dyRow + col*dyCol, pt1.Z + row*dzRow + col*dzCol);
+                    var pt2New = new Point3D(pt2.X + row*dxRow + col*dxCol, pt2.Y + row*dyRow + col*dyCol, pt2.Z + row*dzRow + col*dzCol);
+                    var pt3New = new Point3D(pt3.X + row*dxRow + col*dxCol, pt3.Y + row*dyRow + col*dyCol, pt3.Z + row*dzRow + col*dzCol);
+                    var pt4New = new Point3D(pt4.X + row*dxRow + col*dxCol, pt4.Y + row*dyRow + col*dyCol, pt4.Z + row*dzRow + col*dzCol);
+
+                    positions.Add(pt1New);
+                    positions.Add(pt2New);
+                    positions.Add(pt4New);
+                    positions.Add(pt2New);
+                    positions.Add(pt3New);
+                    positions.Add(pt4New);
                 }
             }
 
-            Enumerable.Range(triangleIndices.Count, 6*density*density).ToList().ForEach(triangleIndices.Add);
+            Enumerable.Range(triangleIndices.Count, 6*triangleDensity*triangleDensity)
+                .ToList()
+                .ForEach(triangleIndices.Add);
         }
 
         private Model3DGroup CreateModelGroupForInternalRow(InternalRow internalRow)

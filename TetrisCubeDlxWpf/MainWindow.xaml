@@ -9,15 +9,14 @@
     <Grid>
         <Viewport3D x:Name="Viewport3D">
             <Viewport3D.Camera>
-                <PerspectiveCamera Position="-4.5,5,15" LookDirection="0.4,-0.2,-1" UpDirection="0,1,0" FieldOfView="20" />
+                <PerspectiveCamera Position="-4.5,7,15" LookDirection="0.4,-0.3,-1" UpDirection="0,1,0" FieldOfView="20" />
             </Viewport3D.Camera>
             <ModelVisual3D>
                 <ModelVisual3D.Content>
                     <Model3DGroup x:Name="CubeGroup">
-                        <!--<DirectionalLight Direction="0,0,-1" />-->
-                        <PointLight Color="White" Position="-4.5,5,-2" />
-                        <PointLight Color="White" Position="2,10,-2" />
-                        <SpotLight Color="White" Position="-4.5,5,15" Direction="0.4,-0.2,-1" InnerConeAngle="8" OuterConeAngle="12" />
+                        <SpotLight Color="White" Position="2,2,15" Direction="0,0,-1" InnerConeAngle="8" OuterConeAngle="22" />
+                        <SpotLight Color="White" Position="2,19,-2" Direction="0,-1,0" InnerConeAngle="8" OuterConeAngle="22" />
+                        <SpotLight Color="White" Position="-15,2,-2" Direction="1,0,0" InnerConeAngle="8" OuterConeAngle="22" />
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
