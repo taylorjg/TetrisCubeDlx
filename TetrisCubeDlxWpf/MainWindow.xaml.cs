@@ -161,7 +161,8 @@ namespace TetrisCubeDlxWpf
                             SpecularPower = 30.0d
                         }
                     }
-                }
+                },
+                BackMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.Silver))
             };
         }
 
@@ -180,61 +181,84 @@ namespace TetrisCubeDlxWpf
             switch (face)
             {
                 case Face.Front:
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z));
+                    AddFaceTriangles1(
+                        positions,
+                        triangleIndices,
+                        new Point3D(coords.X, coords.Y, -coords.Z),
+                        new Point3D(coords.X + 1, coords.Y, -coords.Z),
+                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z),
+                        new Point3D(coords.X, coords.Y + 1, -coords.Z));
                     break;
 
                 case Face.Back:
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1));
+                    AddFaceTriangles1(
+                        positions,
+                        triangleIndices,
+                        new Point3D(coords.X + 1, coords.Y, -coords.Z - 1),
+                        new Point3D(coords.X, coords.Y, -coords.Z - 1),
+                        new Point3D(coords.X, coords.Y + 1, -coords.Z - 1),
+                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1));
                     break;
 
                 case Face.Left:
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
+                    AddFaceTriangles1(
+                        positions,
+                        triangleIndices,
+                        new Point3D(coords.X, coords.Y, -coords.Z - 1),
+                        new Point3D(coords.X, coords.Y, -coords.Z),
+                        new Point3D(coords.X, coords.Y + 1, -coords.Z),
+                        new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
                     break;
 
                 case Face.Right:
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z));
+                    AddFaceTriangles1(
+                        positions,
+                        triangleIndices,
+                        new Point3D(coords.X + 1, coords.Y, -coords.Z),
+                        new Point3D(coords.X + 1, coords.Y, -coords.Z - 1),
+                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1),
+                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z));
                     break;
 
                 case Face.Top:
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
+                    AddFaceTriangles1(
+                        positions,
+                        triangleIndices,
+                        new Point3D(coords.X, coords.Y + 1, -coords.Z),
+                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z),
+                        new Point3D(coords.X + 1, coords.Y + 1, -coords.Z - 1),
+                        new Point3D(coords.X, coords.Y + 1, -coords.Z - 1));
                     break;
 
                 case Face.Bottom:
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z - 1));
-                    positions.Add(new Point3D(coords.X + 1, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z));
-                    positions.Add(new Point3D(coords.X, coords.Y, -coords.Z - 1));
+                    AddFaceTriangles1(
+                        positions,
+                        triangleIndices,
+                        new Point3D(coords.X + 1, coords.Y, -coords.Z - 1),
+                        new Point3D(coords.X + 1, coords.Y, -coords.Z),
+                        new Point3D(coords.X, coords.Y, -coords.Z),
+                        new Point3D(coords.X, coords.Y, -coords.Z - 1));
                     break;
             }
+        }
 
-            Enumerable.Range(triangleIndices.Count, 6).ToList().ForEach(triangleIndices.Add);
+        private static void AddFaceTriangles1(
+            Point3DCollection positions,
+            Int32Collection triangleIndices,
+            Point3D pt1,
+            Point3D pt2,
+            Point3D pt3,
+            Point3D pt4)
+        {
+            positions.Add(pt1);
+            positions.Add(pt2);
+            positions.Add(pt4);
+            Enumerable.Range(triangleIndices.Count, 3).ToList().ForEach(triangleIndices.Add);
+
+            positions.Add(pt2);
+            positions.Add(pt3);
+            positions.Add(pt4);
+            Enumerable.Range(triangleIndices.Count, 3).ToList().ForEach(triangleIndices.Add);
         }
 
         private Model3DGroup CreateModelGroupForInternalRow(InternalRow internalRow)
