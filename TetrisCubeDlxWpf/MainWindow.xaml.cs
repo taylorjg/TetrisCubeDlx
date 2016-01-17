@@ -42,7 +42,7 @@ namespace TetrisCubeDlxWpf
 
             ContentRendered += (_, __) =>
             {
-                // DrawWireframeAxes();
+                //DrawWireframeAxes();
                 DrawWireframeCube();
 
                 _cancellationTokenSource = new CancellationTokenSource();
@@ -64,14 +64,14 @@ namespace TetrisCubeDlxWpf
         // private void DrawWireframeAxes()
         // {
         //     var points = new Point3DCollection
-        //     {
-        //         new Point3D(-100, 0, 0),
-        //         new Point3D(+100, 0, 0),
-        //         new Point3D(0, -100, 0),
-        //         new Point3D(0, +100, 0),
-        //         new Point3D(0, 0, -100),
-        //         new Point3D(0, 0, +100)
-        //     };
+        //      {
+        //          new Point3D(-100, 0, 0),
+        //          new Point3D(+100, 0, 0),
+        //          new Point3D(0, -100, 0),
+        //          new Point3D(0, +100, 0),
+        //          new Point3D(0, 0, -100),
+        //          new Point3D(0, 0, +100)
+        //      };
         // 
         //     var wireframeAxes = new ScreenSpaceLines3D
         //     {
@@ -83,6 +83,11 @@ namespace TetrisCubeDlxWpf
         //     Viewport3D.Children.Add(wireframeAxes);
         // }
 
+        private static Point3D TranslatePoint(double x, double y, double z)
+        {
+            return new Point3D(x -2, y -2, z + 2);
+        }
+
         private void DrawWireframeCube()
         {
             var points = new Point3DCollection();
@@ -91,14 +96,14 @@ namespace TetrisCubeDlxWpf
             {
                 for (var x = 0; x <= _puzzle.CubeSize; x++)
                 {
-                    points.Add(new Point3D(x, 0, z));
-                    points.Add(new Point3D(x, _puzzle.CubeSize, z));
+                    points.Add(TranslatePoint(x, 0, z));
+                    points.Add(TranslatePoint(x, _puzzle.CubeSize, z));
                 }
 
                 for (var y = 0; y <= _puzzle.CubeSize; y++)
                 {
-                    points.Add(new Point3D(0, y, z));
-                    points.Add(new Point3D(_puzzle.CubeSize, y, z));
+                    points.Add(TranslatePoint(0, y, z));
+                    points.Add(TranslatePoint(_puzzle.CubeSize, y, z));
                 }
             }
 
@@ -106,8 +111,8 @@ namespace TetrisCubeDlxWpf
             {
                 for (var y = 0; y <= _puzzle.CubeSize; y++)
                 {
-                    points.Add(new Point3D(x, y, 0));
-                    points.Add(new Point3D(x, y, -_puzzle.CubeSize));
+                    points.Add(TranslatePoint(x, y, 0));
+                    points.Add(TranslatePoint(x, y, -_puzzle.CubeSize));
                 }
             }
 
@@ -145,17 +150,8 @@ namespace TetrisCubeDlxWpf
                     Children = new MaterialCollection
                     {
                         new DiffuseMaterial(new SolidColorBrush(_colourLookup[internalRow.Colour]))
-                        {
-                            Brush = {Opacity = 1.0d}
-                        },
-                        new SpecularMaterial
-                        {
-                            Color = Colors.White,
-                            SpecularPower = 50.0d
-                        }
                     }
-                },
-                BackMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.Silver))
+                }
             };
         }
 
@@ -179,10 +175,10 @@ namespace TetrisCubeDlxWpf
                 case Face.Front:
                     AddFaceTriangles3(
                         positions, triangleIndices,
-                        new Point3D(coords.X, coords.Y, -coords.Z),
-                        new Point3D(coords.X + delta, coords.Y, -coords.Z),
-                        new Point3D(coords.X + delta, coords.Y + delta, -coords.Z),
-                        new Point3D(coords.X, coords.Y + delta, -coords.Z),
+                        TranslatePoint(coords.X, coords.Y, -coords.Z),
+                        TranslatePoint(coords.X + delta, coords.Y, -coords.Z),
+                        TranslatePoint(coords.X + delta, coords.Y + delta, -coords.Z),
+                        TranslatePoint(coords.X, coords.Y + delta, -coords.Z),
                         triangleDensity,
                         0, delta, 0,
                         delta, 0, 0);
@@ -191,10 +187,10 @@ namespace TetrisCubeDlxWpf
                 case Face.Back:
                     AddFaceTriangles3(
                         positions, triangleIndices,
-                        new Point3D(coords.X + delta, coords.Y, -coords.Z - 1),
-                        new Point3D(coords.X, coords.Y, -coords.Z - 1),
-                        new Point3D(coords.X, coords.Y + delta, -coords.Z - 1),
-                        new Point3D(coords.X + delta, coords.Y + delta, -coords.Z - 1),
+                        TranslatePoint(coords.X + delta, coords.Y, -coords.Z - 1),
+                        TranslatePoint(coords.X, coords.Y, -coords.Z - 1),
+                        TranslatePoint(coords.X, coords.Y + delta, -coords.Z - 1),
+                        TranslatePoint(coords.X + delta, coords.Y + delta, -coords.Z - 1),
                         triangleDensity,
                         0, delta, 0,
                         delta, 0, 0);
@@ -203,10 +199,10 @@ namespace TetrisCubeDlxWpf
                 case Face.Left:
                     AddFaceTriangles3(
                         positions, triangleIndices,
-                        new Point3D(coords.X, coords.Y, -coords.Z - delta),
-                        new Point3D(coords.X, coords.Y, -coords.Z),
-                        new Point3D(coords.X, coords.Y + delta, -coords.Z),
-                        new Point3D(coords.X, coords.Y + delta, -coords.Z - delta),
+                        TranslatePoint(coords.X, coords.Y, -coords.Z - delta),
+                        TranslatePoint(coords.X, coords.Y, -coords.Z),
+                        TranslatePoint(coords.X, coords.Y + delta, -coords.Z),
+                        TranslatePoint(coords.X, coords.Y + delta, -coords.Z - delta),
                         triangleDensity,
                         0, delta, 0,
                         0, 0, -delta);
@@ -215,10 +211,10 @@ namespace TetrisCubeDlxWpf
                 case Face.Right:
                     AddFaceTriangles3(
                         positions, triangleIndices,
-                        new Point3D(coords.X + 1, coords.Y, -coords.Z),
-                        new Point3D(coords.X + 1, coords.Y, -coords.Z - delta),
-                        new Point3D(coords.X + 1, coords.Y + delta, -coords.Z - delta),
-                        new Point3D(coords.X + 1, coords.Y + delta, -coords.Z),
+                        TranslatePoint(coords.X + 1, coords.Y, -coords.Z),
+                        TranslatePoint(coords.X + 1, coords.Y, -coords.Z - delta),
+                        TranslatePoint(coords.X + 1, coords.Y + delta, -coords.Z - delta),
+                        TranslatePoint(coords.X + 1, coords.Y + delta, -coords.Z),
                         triangleDensity,
                         0, delta, 0,
                         0, 0, -delta);
@@ -227,10 +223,10 @@ namespace TetrisCubeDlxWpf
                 case Face.Top:
                     AddFaceTriangles3(
                         positions, triangleIndices,
-                        new Point3D(coords.X, coords.Y + 1, -coords.Z),
-                        new Point3D(coords.X + delta, coords.Y + 1, -coords.Z),
-                        new Point3D(coords.X + delta, coords.Y + 1, -coords.Z - delta),
-                        new Point3D(coords.X, coords.Y + 1, -coords.Z - delta),
+                        TranslatePoint(coords.X, coords.Y + 1, -coords.Z),
+                        TranslatePoint(coords.X + delta, coords.Y + 1, -coords.Z),
+                        TranslatePoint(coords.X + delta, coords.Y + 1, -coords.Z - delta),
+                        TranslatePoint(coords.X, coords.Y + 1, -coords.Z - delta),
                         triangleDensity,
                         0, 0, -delta,
                         delta, 0, 0);
@@ -239,64 +235,16 @@ namespace TetrisCubeDlxWpf
                 case Face.Bottom:
                     AddFaceTriangles3(
                         positions, triangleIndices,
-                        new Point3D(coords.X + delta, coords.Y, -coords.Z - delta),
-                        new Point3D(coords.X + delta, coords.Y, -coords.Z),
-                        new Point3D(coords.X, coords.Y, -coords.Z),
-                        new Point3D(coords.X, coords.Y, -coords.Z - delta),
+                        TranslatePoint(coords.X + delta, coords.Y, -coords.Z - delta),
+                        TranslatePoint(coords.X + delta, coords.Y, -coords.Z),
+                        TranslatePoint(coords.X, coords.Y, -coords.Z),
+                        TranslatePoint(coords.X, coords.Y, -coords.Z - delta),
                         triangleDensity,
                         delta, 0, 0,
                         0, 0, -delta);
                     break;
             }
         }
-
-        // private static void AddFaceTriangles1(
-        //     Point3DCollection positions,
-        //     Int32Collection triangleIndices,
-        //     Point3D pt1,
-        //     Point3D pt2,
-        //     Point3D pt3,
-        //     Point3D pt4)
-        // {
-        //     positions.Add(pt1);
-        //     positions.Add(pt2);
-        //     positions.Add(pt4);
-        //     Enumerable.Range(triangleIndices.Count, 3).ToList().ForEach(triangleIndices.Add);
-        // 
-        //     positions.Add(pt2);
-        //     positions.Add(pt3);
-        //     positions.Add(pt4);
-        //     Enumerable.Range(triangleIndices.Count, 3).ToList().ForEach(triangleIndices.Add);
-        // }
-
-        // private static void AddFaceTriangles2(
-        //     Point3DCollection positions,
-        //     Int32Collection triangleIndices,
-        //     Point3D pt1,
-        //     Point3D pt2,
-        //     Point3D pt3,
-        //     Point3D pt4)
-        // {
-        //     const int density = 10;
-        //     const double size = 1d/density;
-        // 
-        //     var bottomLeftPoints = (
-        //         from x in Enumerable.Range(0, density)
-        //         from y in Enumerable.Range(0, density)
-        //         select new Point3D(pt1.X + x*size, pt1.Y + y*size, pt1.Z)).ToList();
-        // 
-        //     bottomLeftPoints.ForEach(pt =>
-        //     {
-        //         positions.Add(pt);
-        //         positions.Add(new Point3D(pt.X + size, pt.Y, pt.Z));
-        //         positions.Add(new Point3D(pt.X, pt.Y + size, pt.Z));
-        //         positions.Add(new Point3D(pt.X + size, pt.Y, pt.Z));
-        //         positions.Add(new Point3D(pt.X + size, pt.Y + size, pt.Z));
-        //         positions.Add(new Point3D(pt.X, pt.Y + size, pt.Z));
-        //     });
-        // 
-        //     Enumerable.Range(triangleIndices.Count, 600).ToList().ForEach(triangleIndices.Add);
-        // }
 
         private static void AddFaceTriangles3(
             Point3DCollection positions,
