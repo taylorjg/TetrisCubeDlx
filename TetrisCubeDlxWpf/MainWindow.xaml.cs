@@ -326,8 +326,15 @@ namespace TetrisCubeDlxWpf
             AdjustPlacedPieces(internalRows);
         }
 
-        private void AdjustPlacedPieces(IImmutableList<InternalRow> internalRows)
+        private void AdjustPlacedPieces(IReadOnlyCollection<InternalRow> internalRows)
         {
+            var valuesToRemove = _dictionary
+                .Where(kvp => internalRows.All(internalRow => internalRow.Name != kvp.Key))
+                .Select(kvp => kvp.Value)
+                .ToList();
+
+            valuesToRemove.ForEach(RemoveModelGroupForInternalRow);
+
             foreach (var internalRow in internalRows)
             {
                 Tuple<InternalRow, Model3DGroup> tuple;
